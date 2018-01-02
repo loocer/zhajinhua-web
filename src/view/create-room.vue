@@ -57,12 +57,14 @@ export default {
       //         window.scrollTo(0, document.body.scrollHeight);
       //       });
       //     });
+      var temp = this
       var p = {}
       p.roomNo = this.roomNo
       p.peopleNum = this.gamerNum
       axios.get('/api/create-room', {params: p})
       .then(function (response) {
         console.log(response)
+        temp.$router.push('game-room')
       })
       .catch(function (error) {
         console.log(error)

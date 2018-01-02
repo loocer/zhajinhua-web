@@ -3,7 +3,7 @@
     <div id="Stats-output">
     </div>
     <div id="buttons">
-        <span onclick="kanpai()">翻牌</span>
+        <span @click="kanpai">翻牌</span>
         <span></span>
         <span></span>
         <span></span>
@@ -15,33 +15,40 @@
 </template>
 
 <script>
+import * as THREE from "three";
+// import * as TWEEN from "tween";
 export default {
   name: 'home',
   components: {
-    'header-layer': Header
   },
   data () {
     return {
       msg: '哟嗬喂扎金花',
-      gamerNum: 4
+      gamerNum: 4,
+      showLooker:[],
+      showMesh:[]
+    }
+  },
+  methods: {
+    comeRoom () {
+    },
+    songkai () {
+      for(var s in this.showMesh){
+            this.showMesh[s].position.y = backPosation[s]
+        }
+    },
+    kanpai (){
+      this.showLooker.push({className:'looker4',x:-50,z:0,ro:0});
     }
   },
   mounted () {
     var camera;
     // document.addEventListener('mousemove', onDocumentMouseMove, false);
     
-    var showLooker=[]
+    var showLooker=this.showLooker
     var oarray=[];
-    var showMesh=[];
+    var showMesh=this.showMesh;
     var backPosation=[];
-    function songkai(){
-        for(var s in showMesh){
-            showMesh[s].position.y = backPosation[s]
-        }
-    }
-    function kanpai(){
-        showLooker.push({className:'looker4',x:-50,z:0,ro:0});
-    }
     function chakan(){
         var vector = new THREE.Vector3(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0.5);
         vector = vector.unproject(camera);
@@ -78,7 +85,7 @@ export default {
     ]
     // once everything is loaded, we run our Three.js stuff.
     function init() {
-        textureLoader = new THREE.TextureLoader();
+        // textureLoader = new THREE.TextureLoader();
         var stats = initStats();
 
         // create a scene, that will hold all our elements such as objects, cameras and lights.
@@ -154,8 +161,8 @@ export default {
                 console.log(object)
                 var cube = new THREE.BoxGeometry(20, 15, 0.1);
                 
-                var url = "./assets/6.jpg";
-                var url1 = "./assets/6-1.jpg";
+                var url = "static/6.jpg";
+                var url1 = "static/6-1.jpg";
                 var texture1 = THREE.ImageUtils.loadTexture(url1);
                 var texture2= THREE.ImageUtils.loadTexture(url1);
                 var texture3 = THREE.ImageUtils.loadTexture(url1);
@@ -172,7 +179,7 @@ export default {
                 ];
                 var facematerial=new THREE.MeshFaceMaterial(materialArr);
                 var mesh=new THREE.Mesh(cube,facematerial);//
-                mesh.id = id;
+                // mesh.id = ~~id;
                 mesh.class = object.class
                 oarray.push(mesh)
                 scene.add(mesh);
@@ -203,13 +210,14 @@ export default {
                 return tween
             }
             var temp;
-            for (let d in data){
-                if(d==0){
-                   var tweenObject = getPanel(d,data[d]);
+          
+            for (var did in data){
+                if(did==0){
+                   var tweenObject = getPanel(did,data[did]);
                    temp = tweenObject;
                    tweenObject.start();
                 }else{
-                   var tweenObject1 = getPanel(d,data[d]);
+                   var tweenObject1 = getPanel(did,data[did]);
                    temp.chain(tweenObject1)
                    temp = tweenObject1
                 }
@@ -327,10 +335,6 @@ export default {
     window.onload = init
     document.addEventListener('mousedown', chakan, false);
     document.addEventListener('mousemove', songkai, false);
-  },
-  methods: {
-    comeRoom () {
-    }
   }
 }
 </script>
