@@ -16,6 +16,7 @@
 
 <script>
 import * as THREE from "three";
+import * as datas from '../assets/tools'
 // import * as TWEEN from "tween";
 export default {
   name: 'home',
@@ -43,8 +44,9 @@ export default {
   },
   mounted () {
     var camera;
+    var scene;
     // document.addEventListener('mousemove', onDocumentMouseMove, false);
-    
+    var temp = this
     var showLooker=this.showLooker
     var oarray=[];
     var showMesh=this.showMesh;
@@ -67,29 +69,78 @@ export default {
             }
         }
     }
-    var data = [
-        {class:'looker1',x:0,y:0.1,z:80,rt:-0.8},
-        {class:'looker2',x:80,y:0.1,z:0,rt:-0.2},
-        {class:'looker3',x:0,y:0.1,z:-80,rt:-0.6},
-        {class:'looker4',x:-50,y:0.1,z:0,rt:-0.6},
+    // var data = [
+    //     {class:'looker1',x:0,y:0.1,z:80,rt:-0.8},
+    //     {class:'looker2',x:80,y:0.1,z:0,rt:-0.2},
+    //     {class:'looker3',x:0,y:0.1,z:-80,rt:-0.6},
+    //     {class:'looker4',x:-50,y:0.1,z:0,rt:-0.6},
 
-        {class:'looker1',x:0,y:0.2,z:80,rt:0.1},
-        {class:'looker2',x:80,y:0.2,z:0,rt:-0.12},
-        {class:'looker3',x:0,y:0.2,z:-80,rt:0.6},
-        {class:'looker4',x:-50,y:0.2,z:0,rt:0.36},
+    //     {class:'looker1',x:0,y:0.2,z:80,rt:0.1},
+    //     {class:'looker2',x:80,y:0.2,z:0,rt:-0.12},
+    //     {class:'looker3',x:0,y:0.2,z:-80,rt:0.6},
+    //     {class:'looker4',x:-50,y:0.2,z:0,rt:0.36},
 
-        {class:'looker1',x:0,y:0.3,z:80,rt:0.18},
-        {class:'looker2',x:80,y:0.3,z:0,rt:-0.02},
-        {class:'looker3',x:0,y:0.3,z:-80,rt:-0.76},
-        {class:'looker4',x:-50,y:0.3,z:0,rt:-0.36}
-    ]
+    //     {class:'looker1',x:0,y:0.3,z:80,rt:0.18},
+    //     {class:'looker2',x:80,y:0.3,z:0,rt:-0.02},
+    //     {class:'looker3',x:0,y:0.3,z:-80,rt:-0.76},
+    //     {class:'looker4',x:-50,y:0.3,z:0,rt:-0.36}
+    // ]
+    var data = datas.AllPosations.TYPE_EIGHT
+    function resice(){
+            var planeGeometry = new THREE.PlaneGeometry(10, 20);
+            var planeMaterial = new THREE.MeshLambertMaterial({color: 'red'});
+            var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+
+            // rotate and position the plane
+            plane.rotation.x = -0.5 * Math.PI;
+            plane.position.x = 0;
+            plane.position.y = 0;
+            plane.position.z = 0;
+
+            // add the plane to the scene
+            scene.add(plane);
+           
+            var plane2 = new THREE.Mesh(planeGeometry, planeMaterial);
+            // rotate and position the plane
+            plane2.rotation.x = -0.5 * Math.PI;
+            plane2.position.x = 0;
+            plane2.position.y = 0;
+            plane2.position.z = 0;
+
+            // add the plane to the scene
+            scene.add(plane2);
+            var sp = {
+                x:0,
+                y:0,
+                z:0
+            }
+            var sp1 = {
+                x:0,
+                y:0,
+                z:0
+            }
+            var tween = new TWEEN.Tween(sp).to({x:0, y:0.2, z:80, rz:-0.8 * Math.PI}, 1000).onUpdate(function(){
+                plane.position.x = this.x;
+                plane.position.y = this.y;
+                plane.position.z = this.z;
+                plane.rotation.z = this.rz;
+            })
+            var tween2 = new TWEEN.Tween(sp1).to({x:80, y:0.2, z:0, rz:-0.2 * Math.PI}, 1000).onUpdate(function(){
+                plane2.position.x = this.x;
+                plane2.position.y = this.y;
+                plane2.position.z = this.z;
+                plane2.rotation.z = this.rz;
+            }).start();
+            tween2.chain(tween);
+        }
     // once everything is loaded, we run our Three.js stuff.
     function init() {
         // textureLoader = new THREE.TextureLoader();
         var stats = initStats();
 
         // create a scene, that will hold all our elements such as objects, cameras and lights.
-        var scene = new THREE.Scene();
+        scene = new THREE.Scene();
 
         // create a camera, which defines where we're looking at.
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -228,53 +279,9 @@ export default {
 
 
 
-            // var planeGeometry = new THREE.PlaneGeometry(10, 20);
-            // var planeMaterial = new THREE.MeshLambertMaterial({color: 'red'});
-            // var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-
-
-            // // rotate and position the plane
-            // plane.rotation.x = -0.5 * Math.PI;
-            // plane.position.x = 0;
-            // plane.position.y = 0;
-            // plane.position.z = 0;
-
-            // // add the plane to the scene
-            // scene.add(plane);
-           
-            // var plane2 = new THREE.Mesh(planeGeometry, planeMaterial);
-            // // rotate and position the plane
-            // plane2.rotation.x = -0.5 * Math.PI;
-            // plane2.position.x = 0;
-            // plane2.position.y = 0;
-            // plane2.position.z = 0;
-
-            // // add the plane to the scene
-            // scene.add(plane2);
-            // var sp = {
-            //     x:0,
-            //     y:0,
-            //     z:0
-            // }
-            // var sp1 = {
-            //     x:0,
-            //     y:0,
-            //     z:0
-            // }
-            // var tween = new TWEEN.Tween(sp).to({x:0, y:0.2, z:80, rz:-0.8 * Math.PI}, 1000).onUpdate(function(){
-            //     plane.position.x = this.x;
-            //     plane.position.y = this.y;
-            //     plane.position.z = this.z;
-            //     plane.rotation.z = this.rz;
-            // })
-            // var tween2 = new TWEEN.Tween(sp1).to({x:80, y:0.2, z:0, rz:-0.2 * Math.PI}, 1000).onUpdate(function(){
-            //     plane2.position.x = this.x;
-            //     plane2.position.y = this.y;
-            //     plane2.position.z = this.z;
-            //     plane2.rotation.z = this.rz;
-            // }).start();
-            // tween2.chain(tween);
+            
         }
+
         createPanel();
         var me = "looker1"
         var showLooker1 = [
@@ -333,8 +340,8 @@ export default {
         }
     }
     window.onload = init
-    document.addEventListener('mousedown', chakan, false);
-    document.addEventListener('mousemove', songkai, false);
+    document.addEventListener('mousedown', resice, false);
+    document.addEventListener('mousemove', temp.songkai, false);
   }
 }
 </script>
@@ -345,9 +352,14 @@ body {
   /* set margin to 0 and overflow to hidden, to go fullscreen */
   margin: 0;
   overflow: hidden;
+
 }
 #buttons{
   position: fixed;
   left: 200px;
+}
+.game-main{
+    position: absolute;
+    top:0;
 }
 </style>
