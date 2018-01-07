@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import * as THREE from "three";
+// import * as THREE from "three";
 import * as datas from '../assets/tools'
 // import * as TWEEN from "tween";
 export default {
@@ -51,6 +51,7 @@ export default {
     var oarray=[];
     var showMesh=this.showMesh;
     var backPosation=[];
+    var scale = chroma.scale(['green', 'white']);
     function chakan(){
         var vector = new THREE.Vector3(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0.5);
         vector = vector.unproject(camera);
@@ -85,6 +86,8 @@ export default {
     //     {class:'looker3',x:0,y:0.3,z:-80,rt:-0.76},
     //     {class:'looker4',x:-50,y:0.3,z:0,rt:-0.36}
     // ]
+    Physijs.scripts.worker = '/static/libs/physijs_worker.js';
+    Physijs.scripts.ammo = './ammo.js';
     var data = datas.AllPosations.TYPE_EIGHT
     function resice(){
             var planeGeometry = new THREE.PlaneGeometry(10, 20);
@@ -140,8 +143,9 @@ export default {
         var stats = initStats();
 
         // create a scene, that will hold all our elements such as objects, cameras and lights.
-        scene = new THREE.Scene();
-
+        // var scene = new THREE.Scene();
+        var scene = new Physijs.Scene;
+        scene.setGravity(new THREE.Vector3(0, -80, 0));
         // create a camera, which defines where we're looking at.
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.x = -100;
@@ -212,8 +216,8 @@ export default {
                 console.log(object)
                 var cube = new THREE.BoxGeometry(20, 15, 0.1);
                 
-                var url = "static/6.jpg";
-                var url1 = "static/6-1.jpg";
+                var url = "/static/assets/6.jpg";
+                var url1 = "/static/assets/6-1.jpg";
                 var texture1 = THREE.ImageUtils.loadTexture(url1);
                 var texture2= THREE.ImageUtils.loadTexture(url1);
                 var texture3 = THREE.ImageUtils.loadTexture(url1);
@@ -230,7 +234,7 @@ export default {
                 ];
                 var facematerial=new THREE.MeshFaceMaterial(materialArr);
                 var mesh=new THREE.Mesh(cube,facematerial);//
-                // mesh.id = ~~id;
+                // mesh.id = id;
                 mesh.class = object.class
                 oarray.push(mesh)
                 scene.add(mesh);
@@ -252,6 +256,12 @@ export default {
                     y:0,
                     z:0
                 }
+                var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, 400).onUpdate(function(){
+                    plane.position.x = this.x;
+                    plane.position.y = this.y;
+                    plane.position.z = this.z;
+                    plane.rotation.z = this.rz;
+                })
                 var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, 500).onUpdate(function(){
                     mesh.position.x = this.x;
                     mesh.position.y = this.y;
@@ -261,14 +271,13 @@ export default {
                 return tween
             }
             var temp;
-          
-            for (var did in data){
-                if(did==0){
-                   var tweenObject = getPanel(did,data[did]);
+            for (let d in data){
+                if(d==0){
+                   var tweenObject = getPanel(d,data[d]);
                    temp = tweenObject;
                    tweenObject.start();
                 }else{
-                   var tweenObject1 = getPanel(did,data[did]);
+                   var tweenObject1 = getPanel(d,data[d]);
                    temp.chain(tweenObject1)
                    temp = tweenObject1
                 }
@@ -279,9 +288,53 @@ export default {
 
 
 
-            
-        }
+            // var planeGeometry = new THREE.PlaneGeometry(10, 20);
+            // var planeMaterial = new THREE.MeshLambertMaterial({color: 'red'});
+            // var plane = new THREE.Mesh(planeGeometry, planeMaterial);
 
+
+            // // rotate and position the plane
+            // plane.rotation.x = -0.5 * Math.PI;
+            // plane.position.x = 0;
+            // plane.position.y = 0;
+            // plane.position.z = 0;
+
+            // // add the plane to the scene
+            // scene.add(plane);
+           
+            // var plane2 = new THREE.Mesh(planeGeometry, planeMaterial);
+            // // rotate and position the plane
+            // plane2.rotation.x = -0.5 * Math.PI;
+            // plane2.position.x = 0;
+            // plane2.position.y = 0;
+            // plane2.position.z = 0;
+
+            // // add the plane to the scene
+            // scene.add(plane2);
+            // var sp = {
+            //     x:0,
+            //     y:0,
+            //     z:0
+            // }
+            // var sp1 = {
+            //     x:0,
+            //     y:0,
+            //     z:0
+            // }
+            // var tween = new TWEEN.Tween(sp).to({x:0, y:0.2, z:80, rz:-0.8 * Math.PI}, 1000).onUpdate(function(){
+            //     plane.position.x = this.x;
+            //     plane.position.y = this.y;
+            //     plane.position.z = this.z;
+            //     plane.rotation.z = this.rz;
+            // })
+            // var tween2 = new TWEEN.Tween(sp1).to({x:80, y:0.2, z:0, rz:-0.2 * Math.PI}, 1000).onUpdate(function(){
+            //     plane2.position.x = this.x;
+            //     plane2.position.y = this.y;
+            //     plane2.position.z = this.z;
+            //     plane2.rotation.z = this.rz;
+            // }).start();
+            // tween2.chain(tween);
+        }
         createPanel();
         var me = "looker1"
         var showLooker1 = [
@@ -310,17 +363,68 @@ export default {
                 
             }) 
         }
+        var startP1={x:-50,y:20,z:0}
+        var endP1 = {x:0,y:20,z:0}
+        var pm = endP1
+
+        function getMaterial() {
+            var material = Physijs.createMaterial(
+                    new THREE.MeshLambertMaterial(
+                            {
+                                color: scale(Math.random()).hex(),
+//                                opacity: 0.8,
+//                                transparent: true
+                            }), 0.5, 0.7);
+
+            return material;
+        }
+        function createBox(stratPosation){
+            var stoneGeom = new THREE.BoxGeometry(10, 5, 10);
+            var stone = new Physijs.BoxMesh(stoneGeom, Physijs.createMaterial(new THREE.MeshLambertMaterial(
+                    {
+                        color: scale(Math.random()).hex(),
+                        transparent: false, opacity: 1,
+                           map: THREE.ImageUtils.loadTexture( '/static/assets/textures/general/darker_wood.jpg' )
+                    }),0.5,0.7));
+            stone.position.copy(new THREE.Vector3(pm.x, pm.y, pm.z));
+            stone.lookAt(scene.position);
+            stone.__dirtyRotation = true;
+            // stone.position.y = 3.5;
+
+            scene.add(stone);
+            var tween = new TWEEN.Tween(startP1).to({x:endP1.x, y:endP1.y, z:endP1.z}, 5000).onUpdate(function(){
+                var temp = this
+                stone.position.x = temp.x
+                stone.position.z = temp.z
+                // stone.position=(new THREE.Vector3(temp.x, temp.y, temp.z));
+                    // pm[0] = this.x;
+                    // pm[1] = this.y;
+                    // pm[2] = this.z;
+                })
+            tween.start();
+        }
+        function createGround(){
+            var ground_material = Physijs.createMaterial(
+                    new THREE.MeshPhongMaterial({map: THREE.ImageUtils.loadTexture('/static/assets/textures/general/wood-2.jpg')}),
+                    .9, .3);
+            var ground = new Physijs.BoxMesh(new THREE.BoxGeometry(180,0.1, 180), ground_material, 0);
+            scene.add(ground);
+        }
+        createBox()
+        createGround()
         function render() {
 
             stats.update();
             TWEEN.update();
             knowWhat();
+
             // render using requestAnimationFrame
             // cameraAction();
             camera.lookAt(new THREE.Vector3(0, 0, 0));
         // .position.x = 20+( 10*(Math.cos(step)));
             requestAnimationFrame(render);
             renderer.render(scene, camera);
+            scene.simulate(undefined, 1);
         }
 
         function initStats() {
@@ -339,8 +443,11 @@ export default {
             return stats;
         }
     }
+    // window.onload = init
+
+
     window.onload = init
-    document.addEventListener('mousedown', resice, false);
+    document.addEventListener('mousedown', chakan, false);
     document.addEventListener('mousemove', temp.songkai, false);
   }
 }
