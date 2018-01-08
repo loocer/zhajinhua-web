@@ -27,5 +27,42 @@ export const AllPosations = {
         {x:0,y:0.1,z:-80,rt:0.3},
         {x:-50,y:0.1,z:0,rt:0.3}
     ],
+};
+export const peopleNumType = {
+    TYPE_ONE : 'TYPE_ONE',
+    TYPE_TWO : 'TYPE_TWO',
+    TYPE_THREE : 'TYPE_THREE',
+    TYPE_FUOR : 'TYPE_FUOR',
+    TYPE_FIVE : 'TYPE_FIVE',
+    TYPE_SIX : 'TYPE_SIX',
+    TYPE_SEVEN : 'TYPE_SEVEN',
+    TYPE_EIGHT : 'TYPE_EIGHT'
+};
+export const getSessionKey = (key, defaultValue) => {
+  const item = window.sessionStorage.getItem(key);
+  if (item == undefined && defaultValue != undefined) {
+    return defaultValue
+  }
+  return item;
 }
+
+export const getBaseUrl = (url) => {
+  var reg = /^((\w+):\/\/([^\/:]*)(?::(\d+))?)(.*)/;
+  reg.exec(url);
+  return RegExp.$1;
+}
+
+export const keyMirror = (obj) => {
+  let key
+  let mirrored = {}
+  if (obj && typeof obj === 'object') {
+    for (key in obj) {
+      if ({}.hasOwnProperty.call(obj, key)) {
+        mirrored[ key ] = key
+      }
+    }
+  }
+  return mirrored
+}
+
 

@@ -64,7 +64,19 @@ export default {
       axios.get('/api/create-room', {params: p})
       .then(function (response) {
         console.log(response)
-        temp.$router.push('game-room')
+        if(response.data.status === 1){
+          new Promise(function(resolve, reject){
+            temp.$store.commit('roomBaseInfo', response.data.data)
+            resolve(response.data)
+          }).then(function(successMessage){
+            temp.$router.push('game-room')
+          })
+        }else{
+          alert(response.msg)
+        }
+        
+        // temp.$store.commit('roomBaseInfo', response.data.data)
+        // temp.$router.push('game-room')
       })
       .catch(function (error) {
         console.log(error)

@@ -1,7 +1,7 @@
 import * as datas from './tools'
-class gameObject{
+export default class GameObject{
 	constructor(obj){
-		this.id = id
+		this.id = Date.parse( new Date())
 		this._camera = null
 		this._scene = null
 		this._lookAtMesh = null
@@ -22,8 +22,8 @@ class gameObject{
 		this._allPosations = datas.AllPosations[temp._gameType]
 	}
 	_render(){
-		let temp = this
-		_test_initState.update()
+		var temp = this
+		this._test_initState().update()
         TWEEN.update()
         this._camera.lookAt(new THREE.Vector3(0, 0, 0))
         requestAnimationFrame(temp._render)
@@ -97,7 +97,7 @@ class gameObject{
         document.getElementById("Stats-output").appendChild(stats.domElement)
         return stats
 	}
-	resice(chipsObj){
+	resice(chipsObj) {
 		var endP1 = {x:0,y:20,z:0}
         var pm = endP1
         var temp = this
@@ -117,23 +117,26 @@ class gameObject{
         var tween = new TWEEN.Tween(chipsObj.p).to({x:pm.x, y:pm.y, z:pm.z}, 5000).onUpdate(function(){
             stone.position.x = this.x
             stone.position.z = this.z
-        tween.start()
-	}
+            tween.start()
+	   })
+    }
 	init(){
 		this._setAllPosations()
-		this.scene = new Physijs.Scene
-		this.scene.setGravity(new THREE.Vector3(0, -80, 0))
+        Physijs.scripts.worker = '/static/libs/physijs_worker.js';
+        Physijs.scripts.ammo = './ammo.js';
+		this._scene = new Physijs.Scene
+		this._scene.setGravity(new THREE.Vector3(0, -80, 0))
 		this._camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
         this._camera.position.x = -100
         this._camera.position.y = 90
         this._camera.position.z = 0
-        this._renderer = new THREE.WebGLRenderer()
+        let renderer = this._renderer = new THREE.WebGLRenderer()
         this._renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0))
         this._renderer.setSize(window.innerWidth, window.innerHeight)
 
         let planeGeometry = new THREE.PlaneGeometry(180, 180)
         let planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff})
-        this._plane = new THREE.Mesh(planeGeometry, planeMaterial)
+        let plane = this._plane = new THREE.Mesh(planeGeometry, planeMaterial)
         // rotate and position the plane
         this._plane.rotation.x = -0.5 * Math.PI
         this._plane.position.x = 0
@@ -150,12 +153,12 @@ class gameObject{
         this._scene.add(directionalLight)
 
         // add subtle ambient lighting
-        let ambientLight = _ambientLight = new THREE.AmbientLight(0x292929);
-        this._scene.add(ambientLight);
+        let ambientLight = this._ambientLight = new THREE.AmbientLight(0x292929)
+        this._scene.add(ambientLight)
 
-        this._renderElement.appendChild(renderer.domElement);
+        this._renderElement.appendChild(renderer.domElement)
 
-        this.__createPanel()
+        this._createPanel()
 
         let ground_material = Physijs.createMaterial(
                     new THREE.MeshPhongMaterial({map: THREE.ImageUtils.loadTexture('/static/assets/textures/general/wood-2.jpg')}),
@@ -166,4 +169,3 @@ class gameObject{
         this._render()
 	}
 }
-module.exports = gameObject
