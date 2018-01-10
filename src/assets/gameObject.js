@@ -20,7 +20,7 @@ export default class GameObject{
 		var temp = this
 		this._allPosations = datas.AllPosations[temp._gameType]
 	}
-	setPukerPanel(object){
+	setPukerPanel(object,time){
 
 		var cube = new THREE.BoxGeometry(20, 15, 0.1)
                 
@@ -47,16 +47,16 @@ export default class GameObject{
         mesh.position.z = 0
         var sp = {
             x:0,
-            y:50,
+            y:30,
             z:0
         }
-        var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, 400).onUpdate(function(){
+        var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, time).onUpdate(function(){
             plane.position.x = this.x
             plane.position.y = this.y
             plane.position.z = this.z
             plane.rotation.z = this.rz
         })
-        var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, 500).onUpdate(function(){
+        var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, time).onUpdate(function(){
             mesh.position.x = this.x
             mesh.position.y = this.y
             mesh.position.z = this.z
@@ -64,16 +64,30 @@ export default class GameObject{
         })
         return tween
 	}
+    initPuker(){
+        var data = []
+        for(let i = 0;i<3;i++){
+            data = data.concat(this._allPosations)
+        }
+        for (let d in data){
+            data[d].rt = Math.random()
+            this.setPukerPanel(data[d],1000).start()
+        }
+    }
 	createPanel(){
 		var temp;
-		var data = this._allPosations
+		var data = []
+        for(let i = 0;i<3;i++){
+            data = data.concat(this._allPosations)
+        }
         for (let d in data){
+            data[d].rt = Math.random()
             if(d==0){
-               var tweenObject = this.setPukerPanel(data[d]);
+               var tweenObject = this.setPukerPanel(data[d],500);
                temp = tweenObject;
                tweenObject.start();
             }else{
-               var tweenObject1 = this.setPukerPanel(data[d]);
+               var tweenObject1 = this.setPukerPanel(data[d],500);
                temp.chain(tweenObject1)
                temp = tweenObject1
             }
@@ -82,7 +96,6 @@ export default class GameObject{
 	test_initState(){
 		var stats = new Stats()
         stats.setMode(0) 
-        // Align top-left
         stats.domElement.style.position = 'absolute'
         stats.domElement.style.left = '0px'
         stats.domElement.style.top = '0px'
@@ -163,8 +176,9 @@ export default class GameObject{
         var s = this.scene
         var c = this.camera
         var r = this.renderer
+        var t = this.test_initState()
         var render = function(){
-            // temp._test_initState().update()
+            t.update()
             TWEEN.update()
             c.lookAt(new THREE.Vector3(0, 0, 0))
             r.render(s, c)

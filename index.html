@@ -13,6 +13,13 @@
     <!-- <script type="text/javascript" src="/static/socket.io.js"></script> -->
   </head>
   <body>
+    <script type="text/javascript">
+    document.addEventListener('plusready', function(){
+            //console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+            plus.navigator.setFullscreen(true);
+            plus.screen.lockOrientation('landscape');
+        });
+    </script>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

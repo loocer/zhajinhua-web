@@ -4,8 +4,11 @@
     </div>
     <div id="buttons">
         <span @click="fapai">翻牌</span>
-        <span @click="resice">投注</span>
-        <span></span>
+        <span @click="resice(0)">1投注</span>
+        <span @click="resice(1)">1投注</span>
+        <span @click="resice(2)">1投注</span>
+        <span @click="resice(3)">1投注</span>
+        <span @click="initPuker">初始化牌</span>
         <span></span>
     </div>
     <!-- Div which will hold the Output -->
@@ -59,8 +62,11 @@ export default {
     fapai () {
       this.gameObject.createPanel()
     },
-    resice () {
-      var p = this.gameObject._allPosations[0]
+    initPuker(){
+      this.gameObject.initPuker()
+    },
+    resice (i) {
+      var p = this.gameObject._allPosations[i]
       this.gameObject.resice({x:p.x,y:70,z:p.z})
     }
   },
