@@ -1,54 +1,48 @@
 import * as datas from './tools'
+var camera = null,scene = null,lookAtMesh = null,renderer = null,plane = null,directionalLight= null,
+    ambientLight = null
 export default class GameObject{
 	constructor(obj){
 		this.id = Date.parse( new Date())
-		this._camera = null
-		this._scene = null
-		this._lookAtMesh = null
 		this._gameType = obj.type
 		this._allPosations = []
 		this._renderElement = obj.renderElement
 		this.showLooker = []
 		this.allPokers = true//true is going,false is not going
-		this.backPosations = []
-		this._renderer = null
-		this._plane = null
-		this._directionalLight= null
-		this._ambientLight = null
 		this.raiseMoney = 200
+        this.camera = null
+        this.scene = null
+        this.lookAtMesh = null
+        this.renderer = null
+        this.plane = null
+        this.directionalLight= null
+        this.ambientLight = null
 	}
-	_setAllPosations(){
+	setAllPosations(){
 		var temp = this
 		this._allPosations = datas.AllPosations[temp._gameType]
 	}
-	_render(){
-		var temp = this
-		this._test_initState().update()
-        TWEEN.update()
-        this._camera.lookAt(new THREE.Vector3(0, 0, 0))
-        requestAnimationFrame(temp._render)
-        this.__renderer.render(temp._scene, temp._camera)
-        this._scene.simulate(undefined, 1)
-	}
-	_setPukerPanel(object){
+	setPukerPanel(object){
+
 		var cube = new THREE.BoxGeometry(20, 15, 0.1)
                 
-        // var url = "/static/assets/6.jpg";
-        // var url1 = "/static/assets/6-1.jpg";
-        var urlF = object.urlFront
-        var urlB = object.urlBack
+        var urlF = "/static/assets/6.jpg";
+        var urlB = "/static/assets/6-1.jpg";
+        // var urlF = object.urlFront
+        // var urlB = object.urlBack
         var materialArr = []
         for(let i = 0 ; i < 6; i++){
         	var url = i === 4 ? urlF : urlB
-        	var texture = THREE.ImageUtils.loadTexture(url)
-        	materialArr.push(texture)
+        	let texture = THREE.ImageUtils.loadTexture(url)
+            let m = new THREE.MeshPhongMaterial({map:texture})
+        	materialArr.push(m)
         }
 
   
         let facematerial=new THREE.MeshFaceMaterial(materialArr)
         let mesh=new THREE.Mesh(cube,facematerial)
         mesh.class = object.class
-        this._scene.add(mesh)
+        this.scene.add(mesh)
         mesh.rotation.x = -0.5 * Math.PI
         mesh.position.x = 0
         mesh.position.y = 0
@@ -72,22 +66,22 @@ export default class GameObject{
         })
         return tween
 	}
-	_createPanel(){
+	createPanel(){
 		var temp;
 		var data = this._allPosations
         for (let d in data){
             if(d==0){
-               var tweenObject = this._setPukerPanel(d,data[d]);
+               var tweenObject = this.setPukerPanel(data[d]);
                temp = tweenObject;
                tweenObject.start();
             }else{
-               var tweenObject1 = this._setPukerPanel(d,data[d]);
+               var tweenObject1 = this.setPukerPanel(data[d]);
                temp.chain(tweenObject1)
                temp = tweenObject1
             }
         }
 	}
-	_test_initState(){
+	test_initState(){
 		var stats = new Stats()
         stats.setMode(0) 
         // Align top-left
@@ -97,75 +91,88 @@ export default class GameObject{
         document.getElementById("Stats-output").appendChild(stats.domElement)
         return stats
 	}
-	resice(chipsObj) {
-		var endP1 = {x:0,y:20,z:0}
-        var pm = endP1
-        var temp = this
-		let stoneGeom = new THREE.BoxGeometry(chipsObj.l, chipsObj.w, chipsObj.h)
+    resice(pm){
+        var self = this
+        var endP1 = {x:0,y:20,z:0}
+        var scale = chroma.scale(['green', 'white']);
+        var stoneGeom = new THREE.BoxGeometry(10, 5, 10);
         var stone = new Physijs.BoxMesh(stoneGeom, Physijs.createMaterial(new THREE.MeshLambertMaterial(
                 {
                     color: scale(Math.random()).hex(),
                     transparent: false, opacity: 1,
                        map: THREE.ImageUtils.loadTexture( '/static/assets/textures/general/darker_wood.jpg' )
-                }),0.5,0.7))
-        stone.position.copy(new THREE.Vector3(pm.x, pm.y, pm.z))
-        stone.lookAt(temp._scene.position)
-        stone.__dirtyRotation = true
+                }),0.5,0.7));
+        stone.position.copy(new THREE.Vector3(endP1.x, endP1.y, endP1.z));
+        stone.lookAt(self.scene.position);
+        stone.__dirtyRotation = true;
         // stone.position.y = 3.5;
 
-        this._scene.add(stone)
-        var tween = new TWEEN.Tween(chipsObj.p).to({x:pm.x, y:pm.y, z:pm.z}, 5000).onUpdate(function(){
-            stone.position.x = this.x
-            stone.position.z = this.z
-            tween.start()
-	   })
+        this.scene.add(stone);
+        var tween = new TWEEN.Tween(pm).to({x:endP1.x, y:endP1.y, z:endP1.z}, 1000).onUpdate(function(){
+            var temp = this
+            stone.position.x = temp.x
+            stone.position.z = temp.z
+            // stone.position=(new THREE.Vector3(temp.x, temp.y, temp.z));
+                // pm[0] = this.x;
+                // pm[1] = this.y;
+                // pm[2] = this.z;
+            })
+        tween.start();
     }
 	init(){
-		this._setAllPosations()
+		this.setAllPosations()
         Physijs.scripts.worker = '/static/libs/physijs_worker.js';
         Physijs.scripts.ammo = './ammo.js';
-		this._scene = new Physijs.Scene
-		this._scene.setGravity(new THREE.Vector3(0, -80, 0))
-		this._camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
-        this._camera.position.x = -100
-        this._camera.position.y = 90
-        this._camera.position.z = 0
-        let renderer = this._renderer = new THREE.WebGLRenderer()
-        this._renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0))
-        this._renderer.setSize(window.innerWidth, window.innerHeight)
+		this.scene = new Physijs.Scene
+		this.scene.setGravity(new THREE.Vector3(0, -80, 0))
+		let camera = this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+        this.camera.position.x = -100
+        this.camera.position.y = 90
+        this.camera.position.z = 0
+        let renderer = this.renderer = new THREE.WebGLRenderer()
+        this.renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0))
+        this.renderer.setSize(window.innerWidth, window.innerHeight)
 
         let planeGeometry = new THREE.PlaneGeometry(180, 180)
         let planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff})
-        let plane = this._plane = new THREE.Mesh(planeGeometry, planeMaterial)
+        let plane = this.plane = new THREE.Mesh(planeGeometry, planeMaterial)
         // rotate and position the plane
-        this._plane.rotation.x = -0.5 * Math.PI
-        this._plane.position.x = 0
-        this._plane.position.y = 0
-        this._plane.position.z = 0
-        this._scene.add(plane)
+        this.plane.rotation.x = -0.5 * Math.PI
+        this.plane.position.x = 0
+        this.plane.position.y = 0
+        this.plane.position.z = 0
+        this.scene.add(plane)
 
         let lookAtGeom = new THREE.SphereGeometry(2)
-        let lookAtMesh = this._lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({color: 0xff0000}))
-        this._scene.add(lookAtMesh)
+        lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({color: 0xff0000}))
+        this.scene.add(lookAtMesh)
 
-        let directionalLight = this._directionalLight = new THREE.DirectionalLight(0xffffff, 0.7)
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.7)
         directionalLight.position.set(-20, 40, 60)
-        this._scene.add(directionalLight)
+        this.scene.add(directionalLight)
 
         // add subtle ambient lighting
-        let ambientLight = this._ambientLight = new THREE.AmbientLight(0x292929)
-        this._scene.add(ambientLight)
+        let ambientLight = new THREE.AmbientLight(0x292929)
+        this.scene.add(ambientLight)
 
         this._renderElement.appendChild(renderer.domElement)
-
-        this._createPanel()
 
         let ground_material = Physijs.createMaterial(
                     new THREE.MeshPhongMaterial({map: THREE.ImageUtils.loadTexture('/static/assets/textures/general/wood-2.jpg')}),
                     .9, .3)
         let ground = new Physijs.BoxMesh(new THREE.BoxGeometry(180,0.1, 180), ground_material, 0)
-        this._scene.add(ground)
-
-        this._render()
+        this.scene.add(ground)
+        var s = this.scene
+        var c = this.camera
+        var r = this.renderer
+        var render = function(){
+            // temp._test_initState().update()
+            TWEEN.update()
+            c.lookAt(new THREE.Vector3(0, 0, 0))
+            r.render(s, c)
+            s.simulate(undefined, 1)
+            requestAnimationFrame(render)
+        }
+        render()
 	}
 }
