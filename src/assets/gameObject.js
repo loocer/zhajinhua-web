@@ -1,6 +1,4 @@
 import * as datas from './tools'
-var camera = null,scene = null,lookAtMesh = null,renderer = null,plane = null,directionalLight= null,
-    ambientLight = null
 export default class GameObject{
 	constructor(obj){
 		this.id = Date.parse( new Date())
@@ -49,7 +47,7 @@ export default class GameObject{
         mesh.position.z = 0
         var sp = {
             x:0,
-            y:0,
+            y:50,
             z:0
         }
         var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, 400).onUpdate(function(){
@@ -144,7 +142,7 @@ export default class GameObject{
         this.scene.add(plane)
 
         let lookAtGeom = new THREE.SphereGeometry(2)
-        lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({color: 0xff0000}))
+        let lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({color: 0xff0000}))
         this.scene.add(lookAtMesh)
 
         let directionalLight = new THREE.DirectionalLight(0xffffff, 0.7)
