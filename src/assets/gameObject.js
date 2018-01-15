@@ -15,11 +15,54 @@ export default class GameObject{
         this.plane = null
         this.directionalLight= null
         this.ambientLight = null
+        this.allsObject = []
 	}
 	setAllPosations(){
 		var temp = this
 		this._allPosations = datas.AllPosations[temp._gameType]
 	}
+    getMeshOnMourse(self){
+        let maths =[]
+        var vector = new THREE.Vector3(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0.5);
+        vector = vector.unproject(self.camera);
+
+        var raycaster = new THREE.Raycaster(self.camera.position, vector.sub(self.camera.position).normalize());
+
+        var intersects = raycaster.intersectObjects(self.allsObject);
+
+        if (intersects.length > 0) {
+
+            for(var t in intersects){
+                console.log(intersects[t])
+                intersects[t].object.position.y = 1
+                maths.push(intersects[t].object)
+            }
+        }
+        self.checkValue(maths)
+    }
+    checkValue(mathArray){
+       for(let i in mathArray){
+            var sps = {
+                x:mathArray[i].position.x,
+                y:mathArray[i].position.y,
+                z:mathArray[i].position.z,
+                rz:0
+            }
+            var spe = {
+                x:mathArray[i].position.x,
+                y:20,
+                z:mathArray[i].position.z,
+                rz:0.5 * Math.PI
+            }
+            var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                console.log(this)
+                mathArray[i].position.x = this.x
+                mathArray[i].position.y = this.y
+                mathArray[i].position.z = this.z
+                mathArray[i].rotation.z = this.rz
+            }).start()
+       }
+    }
     changeState(obj){
         let color = datas.getStateColor(obj.state)
         this.scene.traverse(function(e){
@@ -68,6 +111,7 @@ export default class GameObject{
         let facematerial=new THREE.MeshFaceMaterial(materialArr)
         let mesh=new THREE.Mesh(cube,facematerial)
         mesh.class = object.class
+        this.allsObject.push(mesh)
         this.scene.add(mesh)
         mesh.rotation.x = -0.5 * Math.PI
         mesh.position.x = 0
@@ -79,12 +123,6 @@ export default class GameObject{
             z:0
         }
         var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, time).onUpdate(function(){
-            plane.position.x = this.x
-            plane.position.y = this.y
-            plane.position.z = this.z
-            plane.rotation.z = this.rz
-        })
-        var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, time).onUpdate(function(){
             mesh.position.x = this.x
             mesh.position.y = this.y
             mesh.position.z = this.z
@@ -94,7 +132,7 @@ export default class GameObject{
 	}
     initPuker(){
         var temp;
-        var data = []
+        var data = [],tempMesh = []
         for(let i = 0;i<3;i++){
             data = data.concat(this._allPosations)
         }
@@ -117,12 +155,38 @@ export default class GameObject{
             mesh.rotation.z = Math.random()
             mesh.rotation.x = -0.5 * Math.PI
             mesh.position.x = data[d].x
-            mesh.position.y = data[d].y
+            mesh.position.y = -10
             mesh.position.z = data[d].z
             mesh.class = data[d].class
+            this.allsObject.push(mesh)
+            tempMesh.push(mesh)
             this.scene.add(mesh)
+
+            let sp = {
+                x:mesh.position.x,
+                y:-5,
+                z:mesh.position.z
+            }
+            var tween = new TWEEN.Tween(sp).to({x:mesh.position.x, y:1, z:mesh.position.z}, 100).onUpdate(function(){
+                 mesh.position.x = this.x
+                 mesh.position.y = this.y
+                 mesh.position.z = this.z
+            }).start()
         }
-        
+
+        // for(let m in tempMesh){
+        //     let sp = {
+        //         x:tempMesh[m].position.x,
+        //         y:-5,
+        //         z:tempMesh[m].position.z
+        //     }
+        //     var tween = new TWEEN.Tween(sp).to({x:tempMesh[m].position.x, y:5, z:tempMesh[m].position.z, rz:tempMesh[m].position.rt}, 1000).onUpdate(function(){
+        //          tempMesh[m].position.x = this.x
+        //          tempMesh[m].position.y = 5
+        //          tempMesh[m].position.z = this.z
+        //          tempMesh[m].rotation.z = this.rz
+        //     }).start()
+        // }
         // var data = []
         // for(let i = 0;i<3;i++){
         //     data = data.concat(this._allPosations)
@@ -234,6 +298,20 @@ export default class GameObject{
 
         this.setStateLight()
 
+        let self = this
+        function knowWhat(){
+           self.scene.traverse(function(e){
+                console.log(e)
+                // if(e.class==='looker2'){
+                //     e.rotation.x = 0.5 * Math.PI;
+                //     console.log(e)
+                // }else if (me === e.class) {
+
+                // }
+                
+            }) 
+        }
+
         var s = this.scene
         var c = this.camera
         var r = this.renderer
@@ -245,6 +323,7 @@ export default class GameObject{
             r.render(s, c)
             s.simulate(undefined, 1)
             requestAnimationFrame(render)
+            // knowWhat()
         }
         render()
 	}

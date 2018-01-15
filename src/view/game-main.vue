@@ -94,6 +94,10 @@ export default {
     parameter.renderElement = document.getElementById("WebGL-output")
     temp.gameObject = new GameObject(parameter) 
     temp.gameObject.init()
+    function fuckWhy(){
+      temp.gameObject.getMeshOnMourse(temp.gameObject)
+    }
+    document.addEventListener('mousedown',fuckWhy , false);
     // function render(){
     //     // temp._test_initState().update()
     //     TWEEN.update()
