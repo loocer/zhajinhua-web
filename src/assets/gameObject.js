@@ -20,10 +20,38 @@ export default class GameObject{
 		var temp = this
 		this._allPosations = datas.AllPosations[temp._gameType]
 	}
+    changeState(obj){
+        let color = datas.getStateColor(obj.state)
+        this.scene.traverse(function(e){
+            if(e.class === obj.id + 'stateLight'){
+                e.material.color = '#000000fa'
+                console.log(e)
+            }
+        })
+    }
+    setStateLight(){
+        let stateColor = datas.stateColor
+        let data = this._allPosations
+        for(let s in data){
+            let color = datas.getStateColor(data[s].state)
+            let sphereGeometry = new THREE.SphereGeometry(3, 10, 10);
+            let sphereMaterial = new THREE.MeshLambertMaterial({color: color});
+            let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            sphere.class = data[s].id + 'stateLight'
+            // position the sphere
+            sphere.position.x = data[s].x;
+            sphere.position.y = -2;
+            sphere.position.z = data[s].z;
+            sphere.castShadow = true;
+
+            // add the sphere to the scene
+            this.scene.add(sphere);
+        }
+        
+    }
 	setPukerPanel(object,time){
 
-		var cube = new THREE.BoxGeometry(20, 15, 0.1)
-                
+		let cube = new THREE.BoxGeometry(20, 15, 0.1)
         var urlF = "/static/assets/6.jpg";
         var urlB = "/static/assets/6-1.jpg";
         // var urlF = object.urlFront
@@ -65,14 +93,44 @@ export default class GameObject{
         return tween
 	}
     initPuker(){
+        var temp;
         var data = []
         for(let i = 0;i<3;i++){
             data = data.concat(this._allPosations)
         }
         for (let d in data){
             data[d].rt = Math.random()
-            this.setPukerPanel(data[d],1000).start()
+            var urlF = "/static/assets/6.jpg";
+            var urlB = "/static/assets/6-1.jpg";
+            // var urlF = object.urlFront
+            // var urlB = object.urlBack
+            var materialArr = []
+            for(let i = 0 ; i < 6; i++){
+                var url = i === 4 ? urlF : urlB
+                let texture = THREE.ImageUtils.loadTexture(url)
+                let m = new THREE.MeshPhongMaterial({map:texture})
+                materialArr.push(m)
+            }
+            let facematerial=new THREE.MeshFaceMaterial(materialArr)
+            let cube = new THREE.BoxGeometry(20, 15, 0.1)
+            let mesh=new THREE.Mesh(cube,facematerial)
+            mesh.rotation.z = Math.random()
+            mesh.rotation.x = -0.5 * Math.PI
+            mesh.position.x = data[d].x
+            mesh.position.y = data[d].y
+            mesh.position.z = data[d].z
+            mesh.class = data[d].class
+            this.scene.add(mesh)
         }
+        
+        // var data = []
+        // for(let i = 0;i<3;i++){
+        //     data = data.concat(this._allPosations)
+        // }
+        // for (let d in data){
+        //     data[d].rt = Math.random()
+        //     this.setPukerPanel(data[d],1000).start()
+        // }
     }
 	createPanel(){
 		var temp;
@@ -155,7 +213,7 @@ export default class GameObject{
         this.scene.add(plane)
 
         let lookAtGeom = new THREE.SphereGeometry(2)
-        let lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({color: 0xff0000}))
+        let lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({color: '#fff700'}))
         this.scene.add(lookAtMesh)
 
         let directionalLight = new THREE.DirectionalLight(0xffffff, 0.7)
@@ -173,6 +231,9 @@ export default class GameObject{
                     .9, .3)
         let ground = new Physijs.BoxMesh(new THREE.BoxGeometry(180,0.1, 180), ground_material, 0)
         this.scene.add(ground)
+
+        this.setStateLight()
+
         var s = this.scene
         var c = this.camera
         var r = this.renderer

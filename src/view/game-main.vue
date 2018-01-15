@@ -8,6 +8,7 @@
         <span @click="resice(1)">1投注</span>
         <span @click="resice(2)">1投注</span>
         <span @click="resice(3)">1投注</span>
+        <span @click="changeState({id:'gjyu',state:'ONGOING'})">改变状态</span>
         <span @click="initPuker">初始化牌</span>
         <span></span>
     </div>
@@ -68,6 +69,9 @@ export default {
     resice (i) {
       var p = this.gameObject._allPosations[i]
       this.gameObject.resice({x:p.x,y:70,z:p.z})
+    },
+    changeState(id){
+      this.gameObject.changeState(id)
     }
   },
   mounted () {

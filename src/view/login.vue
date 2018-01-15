@@ -41,8 +41,8 @@ export default {
   data () {
     return {
       msg: '哟嗬喂扎金花',
-      name: 'Tom',
-      password: '123'
+      name: 'tom',
+      password: '123qwe'
     }
   },
   methods: {
