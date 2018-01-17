@@ -9,7 +9,7 @@
         <span @click="resice(2)">1投注</span>
         <span @click="resice(3)">1投注</span>
         <span @click="checkValue()">查看</span>
-        <span @click="changeState({id:'gjyu',state:'ONGOING'})">改变状态</span>
+        <span @click="changeState({class:'gjyu',state:'ONGOING'})">改变状态</span>
         <span @click="initPuker">初始化牌</span>
         <span></span>
     </div>

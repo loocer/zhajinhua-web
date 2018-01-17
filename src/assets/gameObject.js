@@ -17,6 +17,7 @@ export default class GameObject{
         this.ambientLight = null
         this.allsObject = []
         this.state = {checkState:false}
+        this.textures = [THREE.ImageUtils.loadTexture("/static/assets/6.jpg"),THREE.ImageUtils.loadTexture("/static/assets/6-1.jpg")]
 	}
 	setAllPosations(){
 		var temp = this
@@ -52,13 +53,13 @@ export default class GameObject{
                     x:mathArray[i].position.x,
                     y:mathArray[i].position.y,
                     z:mathArray[i].position.z,
-                    rt:mathArray[i].rotation.z,
+                    rt:1,
                     rz:0
                 }
                 var spe = {
                     x:mathArray[i].position.x,
                     y:20,
-                    z:mathArray[i].position.z + 5 *i -40,
+                    z:mathArray[i].position.z + 5 *i -50,
                     rz:0.5 * Math.PI,
                     rt:0
                 }
@@ -68,6 +69,7 @@ export default class GameObject{
                     mathArray[i].position.y = this.y 
                     mathArray[i].position.z = this.z 
                     mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.y = this.rz/2
                     mathArray[i].rotation.x = this.rz
                     // mathArray[i].rotation.y = this.rz 
                 }).start()
@@ -76,33 +78,36 @@ export default class GameObject{
                 var sps = {
                     x:mathArray[i].position.x,
                     y:mathArray[i].position.y,
-                     rt:mathArray[i].rotation.z,
+                    rt:2 * Math.PI,
                     z:mathArray[i].position.z,
-                    rz:0
+                    rz:0.5 * Math.PI
                 }
                 var spe = {
                     x:mathArray[i].position.x,
-                    y:0,
+                    y:1,
                     rt:Math.random(),
-                    z:mathArray[i].position.z + 40 -5*i,
-                    rz:0.5 * Math.PI
+                    z:mathArray[i].position.z + 50 -5*i,
+                    rz:0
                 }
                 var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
                     mathArray[i].position.x = this.x
                     mathArray[i].position.y = this.y 
                     mathArray[i].position.z = this.z
                     mathArray[i].rotation.z = this.rt
-                    mathArray[i].rotation.x = -this.rz
-                    // mathArray[i].rotation.y = this.rz 
+                    mathArray[i].rotation.y = this.rz/2
+                    mathArray[i].rotation.x = this.rz*2 + 1.5 *Math.PI
+                    // mathArray[i].rotation.y = this.rz + 1.5 * Math.PI
                 }).start()
             }
        }
     }
     changeState(obj){
         let color = datas.getStateColor(obj.state)
+        console.log(color)
         this.scene.traverse(function(e){
-            if(e.class === obj.id + 'stateLight'){
-                e.material.color = '#000000fa'
+            console.log(obj.class + 'stateLight')
+            if(e.class === obj.class + 'stateLight'){
+                e.material.color = color
                 console.log(e)
             }
         })
@@ -115,10 +120,10 @@ export default class GameObject{
             let sphereGeometry = new THREE.SphereGeometry(3, 10, 10);
             let sphereMaterial = new THREE.MeshLambertMaterial({color: color});
             let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-            sphere.class = data[s].id + 'stateLight'
+            sphere.class = data[s].class + 'stateLight'
             // position the sphere
             sphere.position.x = data[s].x;
-            sphere.position.y = -2;
+            sphere.position.y = 2;
             sphere.position.z = data[s].z;
             sphere.castShadow = true;
 
@@ -130,14 +135,14 @@ export default class GameObject{
 	setPukerPanel(object,time){
 
 		let cube = new THREE.BoxGeometry(20, 15, 0.1)
-        var urlF = "/static/assets/6.jpg";
-        var urlB = "/static/assets/6-1.jpg";
+        var urlF = this.textures[0];
+        var urlB = this.textures[1];
         // var urlF = object.urlFront
         // var urlB = object.urlBack
         var materialArr = []
         for(let i = 0 ; i < 6; i++){
         	var url = i === 4 ? urlF : urlB
-        	let texture = THREE.ImageUtils.loadTexture(url)
+        	let texture = url
             let m = new THREE.MeshPhongMaterial({map:texture})
         	materialArr.push(m)
         }
