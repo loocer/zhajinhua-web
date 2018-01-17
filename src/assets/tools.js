@@ -11,10 +11,10 @@ export const AllPosations = {
         {x:-50,y:0.1,z:0,rt:-0.6}
     ],
     TYPE_FUOR:[
-        {id:"rr",x:0,y:0.1,z:80,rt:-0.8,state:stateColor.NORMAL},
-        {id:'gt',x:80,y:0.1,z:0,rt:-0.2,state:stateColor.OVER},
-        {id:'gjyu',x:0,y:0.1,z:-80,rt:-0.6,state:stateColor.NORMAL},
-        {id:'uil',x:-50,y:0.1,z:0,rt:0.3,state:stateColor.ONGOING}
+        {class:"rr",x:0,y:0.1,z:80,rt:-0.8,state:stateColor.NORMAL},
+        {class:'gt',x:80,y:0.1,z:0,rt:-0.2,state:stateColor.OVER},
+        {class:'gjyu',x:0,y:0.1,z:-80,rt:-0.6,state:stateColor.NORMAL},
+        {class:'uil',x:-50,y:0.1,z:0,rt:0.3,state:stateColor.ONGOING}
     ],
     TYPE_FIVE:[
         {x:-30,y:0.1,z:80,rt:-0.8,state:stateColor.NORMAL},

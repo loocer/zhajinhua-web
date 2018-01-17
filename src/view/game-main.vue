@@ -8,6 +8,7 @@
         <span @click="resice(1)">1投注</span>
         <span @click="resice(2)">1投注</span>
         <span @click="resice(3)">1投注</span>
+        <span @click="checkValue()">查看</span>
         <span @click="changeState({id:'gjyu',state:'ONGOING'})">改变状态</span>
         <span @click="initPuker">初始化牌</span>
         <span></span>
@@ -72,7 +73,11 @@ export default {
     },
     changeState(id){
       this.gameObject.changeState(id)
+    },
+    checkValue(){
+      this.gameObject.checkValue()
     }
+
   },
   mounted () {
     var temp = this
@@ -94,19 +99,12 @@ export default {
     parameter.renderElement = document.getElementById("WebGL-output")
     temp.gameObject = new GameObject(parameter) 
     temp.gameObject.init()
-    function fuckWhy(){
-      temp.gameObject.getMeshOnMourse(temp.gameObject)
-    }
-    document.addEventListener('mousedown',fuckWhy , false);
-    // function render(){
-    //     // temp._test_initState().update()
-    //     TWEEN.update()
-    //     temp.gameObject.camera.lookAt(new THREE.Vector3(0, 0, 0))
-    //     temp.gameObject.renderer.render(temp.gameObject.scene, temp.gameObject.camera)
-    //     temp.scene.simulate(undefined, 1)
-    //     requestAnimationFrame(render)
+    
+    // function fuckWhy(){
+    //   temp.gameObject.getMeshOnMourse(temp.gameObject)
     // }
-    // render()
+    // document.addEventListener('mousedown',fuckWhy , false);
+ 
   }
 }
 </script>

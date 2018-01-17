@@ -16,6 +16,7 @@ export default class GameObject{
         this.directionalLight= null
         this.ambientLight = null
         this.allsObject = []
+        this.state = {checkState:false}
 	}
 	setAllPosations(){
 		var temp = this
@@ -40,27 +41,61 @@ export default class GameObject{
         }
         self.checkValue(maths)
     }
-    checkValue(mathArray){
+    checkValue(){
+        console.log(this.state.checkState)
+        this.state.checkState = !this.state.checkState
+        let mathArray = this.allsObject
        for(let i in mathArray){
-            var sps = {
-                x:mathArray[i].position.x,
-                y:mathArray[i].position.y,
-                z:mathArray[i].position.z,
-                rz:0
+        console.log(mathArray[i].rotation.z)
+            if( mathArray[i].class === mathArray[mathArray.length-1].class && this.state.checkState){
+                var sps = {
+                    x:mathArray[i].position.x,
+                    y:mathArray[i].position.y,
+                    z:mathArray[i].position.z,
+                    rt:mathArray[i].rotation.z,
+                    rz:0
+                }
+                var spe = {
+                    x:mathArray[i].position.x,
+                    y:20,
+                    z:mathArray[i].position.z + 5 *i -40,
+                    rz:0.5 * Math.PI,
+                    rt:0
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    // console.log(this)
+                    mathArray[i].position.x = this.x
+                    mathArray[i].position.y = this.y 
+                    mathArray[i].position.z = this.z 
+                    mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.x = this.rz
+                    // mathArray[i].rotation.y = this.rz 
+                }).start()
             }
-            var spe = {
-                x:mathArray[i].position.x,
-                y:20,
-                z:mathArray[i].position.z,
-                rz:0.5 * Math.PI
+            if( mathArray[i].class === mathArray[mathArray.length-1].class && !this.state.checkState){
+                var sps = {
+                    x:mathArray[i].position.x,
+                    y:mathArray[i].position.y,
+                     rt:mathArray[i].rotation.z,
+                    z:mathArray[i].position.z,
+                    rz:0
+                }
+                var spe = {
+                    x:mathArray[i].position.x,
+                    y:0,
+                    rt:Math.random(),
+                    z:mathArray[i].position.z + 40 -5*i,
+                    rz:0.5 * Math.PI
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    mathArray[i].position.x = this.x
+                    mathArray[i].position.y = this.y 
+                    mathArray[i].position.z = this.z
+                    mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.x = -this.rz
+                    // mathArray[i].rotation.y = this.rz 
+                }).start()
             }
-            var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
-                console.log(this)
-                mathArray[i].position.x = this.x
-                mathArray[i].position.y = this.y
-                mathArray[i].position.z = this.z
-                mathArray[i].rotation.z = this.rz
-            }).start()
        }
     }
     changeState(obj){
@@ -152,7 +187,7 @@ export default class GameObject{
             let facematerial=new THREE.MeshFaceMaterial(materialArr)
             let cube = new THREE.BoxGeometry(20, 15, 0.1)
             let mesh=new THREE.Mesh(cube,facematerial)
-            mesh.rotation.z = Math.random()
+            mesh.rotation.z = data[d].rt
             mesh.rotation.x = -0.5 * Math.PI
             mesh.position.x = data[d].x
             mesh.position.y = -10
