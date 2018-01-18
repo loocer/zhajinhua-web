@@ -10,6 +10,8 @@
         <span @click="resice(3)">1投注</span>
         <span @click="checkValue()">查看</span>
         <span @click="changeState({class:'gjyu',state:'ONGOING'})">改变状态</span>
+        <span @click="compare('gjyu')">对比</span>
+        <span @click="compare2('gjyu')">对比</span>
         <span @click="initPuker">初始化牌</span>
         <span></span>
     </div>
@@ -76,8 +78,13 @@ export default {
     },
     checkValue(){
       this.gameObject.checkValue()
+    },
+    compare(className){
+      this.gameObject.compareTemp1(className)
+    },
+    compare2(className){
+      this.gameObject.compareTemp2(className)
     }
-
   },
   mounted () {
     var temp = this

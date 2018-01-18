@@ -15,6 +15,10 @@ export default class GameObject{
         this.plane = null
         this.directionalLight= null
         this.ambientLight = null
+        this.compareTemp = {
+            compareObj:null,
+            compareP:null
+        }
         this.allsObject = []
         this.state = {checkState:false}
         this.textures = [THREE.ImageUtils.loadTexture("/static/assets/6.jpg"),THREE.ImageUtils.loadTexture("/static/assets/6-1.jpg")]
@@ -42,10 +46,94 @@ export default class GameObject{
         }
         self.checkValue(maths)
     }
-    checkValue(){
-        console.log(this.state.checkState)
-        this.state.checkState = !this.state.checkState
+    compareTemp1(className){
+        this.checkValue()
         let mathArray = this.allsObject
+        var myself =  mathArray[mathArray.length-1]
+       for(let i in mathArray){
+            if( mathArray[i].class === className){
+                
+               var sps = {
+                    x:mathArray[i].position.x,
+                    y:mathArray[i].position.y,
+                    z:mathArray[i].position.z,
+                    rt:1,
+                    rz:0
+                }
+                this.compareTemp.compareObj = mathArray[i]
+                this.compareTemp.compareP = sps
+                var spe = {
+                    x:myself.position.x + 20,
+                    y:20,
+                    z:myself.position.z + 5 *i -50,
+                    rz:0.5 * Math.PI,
+                    rt:0
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    mathArray[i].position.x = this.x
+                    mathArray[i].position.y = this.y 
+                    mathArray[i].position.z = this.z 
+                    mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.y = this.rz/2
+                    mathArray[i].rotation.x = this.rz
+                }).start() 
+            }
+       }
+    }
+    compareTemp2(winClass){
+        let temp =this
+        if(winClass === mathArray[mathArray.length-1].class){
+            this.checkValue()
+            var sps = {
+                    x:temp.compareTemp.compareObj.position.x,
+                    y:temp.compareTemp.compareObj.position.y,
+                    z:temp.compareTemp.compareObj.position.z,
+                    rt:1,
+                    rz:0
+                }
+                var spe = {
+                    x:0,
+                    y:2,
+                    z:0,
+                    rz:0.5 * Math.PI,
+                    rt:0
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    mathArray[i].position.x = this.x
+                    mathArray[i].position.y = this.y 
+                    mathArray[i].position.z = this.z 
+                    mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.y = this.rz/2
+                    mathArray[i].rotation.x = this.rz
+                }).start() 
+        }else{
+            var sps = {
+                    x:temp.compareTemp.compareObj.position.x,
+                    y:temp.compareTemp.compareObj.position.y,
+                    z:temp.compareTemp.compareObj.position.z,
+                    rt:1,
+                    rz:0
+                }
+                var spe = {
+                    x:temp.compareTemp.compareP.position.x,
+                    y:temp.compareTemp.compareP.position.y,
+                    z:temp.compareTemp.compareP.position.z,
+                    rz:0.5 * Math.PI,
+                    rt:0
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    mathArray[i].position.x = this.x
+                    mathArray[i].position.y = this.y 
+                    mathArray[i].position.z = this.z 
+                    mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.y = this.rz/2
+                    mathArray[i].rotation.x = this.rz
+                }).start() 
+        }
+    }
+    checkValue(){
+        this.state.checkState = !this.state.checkState
+        let mathArray = this.allsObject 
        for(let i in mathArray){
         console.log(mathArray[i].rotation.z)
             if( mathArray[i].class === mathArray[mathArray.length-1].class && this.state.checkState){
@@ -64,14 +152,12 @@ export default class GameObject{
                     rt:0
                 }
                 var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
-                    // console.log(this)
                     mathArray[i].position.x = this.x
                     mathArray[i].position.y = this.y 
                     mathArray[i].position.z = this.z 
                     mathArray[i].rotation.z = this.rt
                     mathArray[i].rotation.y = this.rz/2
                     mathArray[i].rotation.x = this.rz
-                    // mathArray[i].rotation.y = this.rz 
                 }).start()
             }
             if( mathArray[i].class === mathArray[mathArray.length-1].class && !this.state.checkState){
