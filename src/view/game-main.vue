@@ -2,17 +2,30 @@
   <div class="game-main">
     <div id="Stats-output">
     </div>
-    <div id="buttons">
+    <div class="buttons-1">
         <span @click="fapai">翻牌</span>
         <span @click="resice(0)">1投注</span>
         <span @click="resice(1)">1投注</span>
         <span @click="resice(2)">1投注</span>
         <span @click="resice(3)">1投注</span>
+        <span @click="showValue('gjyu')">任意查看</span>
+        <span @click="hideValue('gjyu')">任意影藏</span>
         <span @click="checkValue()">查看</span>
         <span @click="changeState({class:'gjyu',state:'ONGOING'})">改变状态</span>
         <span @click="compare('gjyu')">对比</span>
         <span @click="compare2('gjyu')">对比</span>
         <span @click="initPuker">初始化牌</span>
+        <span></span>
+    </div>
+    <div class="buttons-2">
+        <span @click="showValue('gt')">任意查看</span>
+        <span @click="hideValue('gt')">任意影藏</span>
+        <span @click="checkValue()">查看</span>
+        <span @click="changeState({class:'gjyu',state:'ONGOING'})">改变状态</span>
+        <span @click="pass('gt')">pass</span>
+        <span @click="compare2('gjyu')">对比</span>
+        <span @click="initPuker">初始化牌</span>
+        <span @click="sendSo('地球人你好，我是太阳之子，我叫tom！')">发送一个消息</span>
         <span></span>
     </div>
     <!-- Div which will hold the Output -->
@@ -84,6 +97,15 @@ export default {
     },
     compare2(className){
       this.gameObject.compareTemp2(className)
+    },
+    showValue(className){
+      this.gameObject.showValue(className)
+    },
+    hideValue(className){
+      this.gameObject.hideValue(className)
+    },
+    pass(className){
+      this.gameObject.pass(className)
     }
   },
   mounted () {
@@ -120,8 +142,13 @@ body {
   margin: 0;
   overflow: hidden;
 }
-#buttons{
+.buttons-1{
   position: fixed;
+  left: 200px;
+}
+.buttons-2{
+  position: fixed;
+  top:30px;
   left: 200px;
 }
 .game-main{

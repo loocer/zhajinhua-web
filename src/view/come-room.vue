@@ -12,7 +12,7 @@
                   房间号：
                 </button>
               </span>
-              <input type="text" class="form-control">
+              <input type="text" v-model="roomNo" class="form-control">
             </div><!-- /input-group -->
            
           </div><!-- /.col-lg-6 --><br>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Header from '@/components/Header'
 export default {
   name: 'home',
@@ -36,11 +37,35 @@ export default {
   data () {
     return {
       msg: '哟嗬喂扎金花',
-      gamerNum: 4
+      gamerNum: 4,
+      roomNo:null
     }
   },
   methods: {
     comeRoom () {
+      var temp = this
+      var p = {}
+      p.roomNo = this.roomNo
+      axios.get('/api/into-room', {params: p})
+      .then(function (response) {
+        console.log(response)
+        if(response.data.status === 1){
+          new Promise(function(resolve, reject){
+            temp.$store.commit('roomBaseInfo', response.data.data)
+            resolve(response.data)
+          }).then(function(successMessage){
+            temp.$router.push('game-room')
+          })
+        }else{
+          alert(response.msg)
+        }
+        
+        // temp.$store.commit('roomBaseInfo', response.data.data)
+        // temp.$router.push('game-room')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
     }
   }
 }

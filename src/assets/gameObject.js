@@ -45,6 +45,125 @@ export default class GameObject{
         }
         self.checkValue(maths)
     }
+    showValue(className){
+        let mathArray = this.allsObject
+        var myself =  mathArray[mathArray.length-1]
+       for(let i in mathArray){
+            if( mathArray[i].class === className){
+               var sps = {
+                    x:mathArray[i].position.x,
+                    y:mathArray[i].position.y,
+                    z:mathArray[i].position.z,
+                    rt:1,
+                    rz:0
+                }
+                this.compareTemp.compareObj.push(mathArray[i])
+                this.compareTemp.compareP.push(sps)
+                var spe = {
+                    x:myself.position.x + 20,
+                    y:20,
+                    z:myself.position.z + 5 *i -50,
+                    rz:0.5 * Math.PI,
+                    rt:0
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    mathArray[i].position.x = this.x
+                    mathArray[i].position.y = this.y 
+                    mathArray[i].position.z = this.z 
+                    mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.y = this.rz/2
+                    mathArray[i].rotation.x = this.rz
+                }).start() 
+            }
+       }
+    }
+    hideValue(className){
+        let tempData = null
+        let mathArray = this._allPosations
+        for(let m in mathArray){
+            if(mathArray[m].class === this.compareTemp.compareObj[0].class){
+                tempData = mathArray[m]
+            }
+        }
+        let objs = this.compareTemp.compareObj
+        let tempArray = []
+        for(let i in objs){
+            if(className === objs[i].class){
+                var sps = {
+                        x:objs[i].position.x,
+                        y:objs[i].position.y,
+                        z:objs[i].position.z,
+                        rt:1,
+                        rz:0
+                    }
+                var spe = {
+                    x:tempData.x,
+                    y:tempData.y,
+                    z:tempData.z,
+                    rz:-0.5 * Math.PI,
+                    rt:Math.random()
+                }
+                
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    objs[i].position.x = this.x
+                    objs[i].position.y = this.y 
+                    objs[i].position.z = this.z 
+                    objs[i].rotation.x = this.rz
+                    objs[i].rotation.z = this.rt
+                    objs[i].rotation.y = 0
+                }).start()  
+            }
+            if(className !== objs[i].class){
+                tempArray.push(objs[i])
+            }
+        }
+        this.compareTemp.compareObj = tempArray
+    }
+    pass(className){
+        let mathArray = this.allsObject
+        for(let i in mathArray){
+            if( mathArray[i].class === className){
+               var sps = {
+                    x:mathArray[i].position.x,
+                    y:mathArray[i].position.y,
+                    z:mathArray[i].position.z,
+                    rt:1,
+                    rz:0
+                }
+                var spe = {
+                    x:0,
+                    y:5,
+                    z:0,
+                    rz:-0.5 * Math.PI,
+                    rt:Math.random()
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    mathArray[i].position.x = this.x
+                    mathArray[i].position.y = this.y 
+                    mathArray[i].position.z = this.z 
+                    mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.y = 0
+                    mathArray[i].rotation.x = this.rz
+                })
+                var spen = {
+                    x:0,
+                    y:-5,
+                    z:0,
+                    rz:-0.5 * Math.PI,
+                    rt:Math.random()
+                }
+                var tween2 = new TWEEN.Tween(spe).to(spen, 1000).onUpdate(function(){
+                    mathArray[i].position.x = this.x
+                    mathArray[i].position.y = this.y 
+                    mathArray[i].position.z = this.z 
+                    mathArray[i].rotation.z = this.rt
+                    mathArray[i].rotation.y = 0
+                    mathArray[i].rotation.x = this.rz
+                })
+                tween.chain(tween2).start()
+            }
+        }
+    }
     compareTemp1(className){
         this.checkValue()
         let mathArray = this.allsObject
