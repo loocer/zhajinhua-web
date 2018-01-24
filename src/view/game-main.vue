@@ -36,7 +36,7 @@
 
 <script>
 // import * as THREE from "three";
-import * as datas from '../assets/tools'
+import * as tools from '../assets/tools'
 import GameObject from '../assets/gameObject'
 import * as io from 'socket.io-client'
 // import * as TWEEN from "tween";
@@ -69,12 +69,53 @@ export default {
   },
   methods: {
     receiveSo (msg) {
-        console.log(msg)
+      let acType = tools.acType
+      if(msg.acType === acType.ON_READY){
+        for(let p in rooms[i].players){
+          rooms[i].players[p].isEnable = true
+        }
+        sendObj = {acType:acType.ON_READY,roomPlayers:rooms[i]}
+      }
+      if(msg.acType === acType.ON_START){
+        if(rooms[i].peopleNum===rooms[i].players.length){
+          rooms[i].setPokersValue()
+          sendObj = {acType:acType.ON_START,allow:true,roomPlayers:rooms[i]}
+        }else{
+          sendObj = {acType:acType.ON_START,allow:false}
+        }
+      }
+      if(msg.acType === acType.SHOW_VALUE){
+        rooms[i].showValue(msg.playerId)
+        frontRoomPlayers.acType = acType.SHOW_VALUE
+        frontRoomPlayers.playerId = msg.playerId
+        sendObj = {acType:acType.SHOW_VALUE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
+      }
+      if(msg.acType === acType.GAME_PK){
+        frontRoomPlayers.acType = acType.GAME_PK
+        frontRoomPlayers.playerId = msg.playerId
+        frontRoomPlayers.raiseMoney = msg.raiseMoney
+        rooms[i].onRaise(msg)
+        sendObj = {acType:acType.RAISE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
+      }
+      if(msg.acType === acType.RAISE){
+        frontRoomPlayers.acType = acType.RAISE
+        frontRoomPlayers.playerId = msg.playerId
+        frontRoomPlayers.raiseMoney = msg.raiseMoney
+        rooms[i].onRaise(msg)
+        sendObj = {acType:acType.RAISE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
+      }
+      if(msg.acType === acType.GAME_PASS){
+        frontRoomPlayers.acType = acType.GAME_PASS
+        frontRoomPlayers.playerId = msg.playerId
+        rooms[i].onPass(msg)
+        sendObj = {acType:acType.GAME_PASS,roomPlayers:rooms[i],backObj:frontRoomPlayers}
+      }
+      console.log(msg)
     },
     sendSo (msg) {
-        var temp = this
-        var roomInfo = this.roomBaseInfo
-        this.gsocket.emit(roomInfo.roomNo, msg);
+      var temp = this
+      var roomInfo = this.roomBaseInfo
+      this.gsocket.emit(roomInfo.roomNo, msg);
     },
     fapai () {
       this.gameObject.createPanel()
@@ -86,8 +127,8 @@ export default {
       var p = this.gameObject._allPosations[i]
       this.gameObject.resice({x:p.x,y:70,z:p.z})
     },
-    changeState(id){
-      this.gameObject.changeState(id)
+    changeState(obj){
+      this.gameObject.changeState(obj)
     },
     checkValue(){
       this.gameObject.checkValue()
