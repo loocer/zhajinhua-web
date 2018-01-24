@@ -74,7 +74,7 @@ export default {
     sendSo (msg) {
         var temp = this
         var roomInfo = this.roomBaseInfo
-        this.gsocket.emit(roomInfo.roomNo, {msg: msg});
+        this.gsocket.emit(roomInfo.roomNo, msg);
     },
     fapai () {
       this.gameObject.createPanel()
@@ -128,7 +128,8 @@ export default {
     parameter.renderElement = document.getElementById("WebGL-output")
     temp.gameObject = new GameObject(parameter) 
     temp.gameObject.init()
-    
+    let ff = {acType: 'ON_READY',roomId: roomInfo.roomNo}
+    this.sendSo(ff)
     // function fuckWhy(){
     //   temp.gameObject.getMeshOnMourse(temp.gameObject)
     // }
