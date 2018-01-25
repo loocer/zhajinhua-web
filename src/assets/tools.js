@@ -3,6 +3,14 @@ export const stateColor={
     ONGOING : "ONGOING",
     NORMAL : "NORMAL"
 };
+export const acType = {
+  ON_READY : 'ON_READY',
+  ON_START : 'ON_START',
+  SHOW_VALUE : 'SHOW_VALUE',
+  GAME_PASS : 'GAME_PASS',
+  GAME_PK : 'GAME_PK',
+  RAISE: 'RAISE'
+}
 export const AllPosations = {
     TYPE_TWO:[{x:80,y:0.1,z:0,rt:-0.5},{x:-50,y:0.1,z:0,rt:-0.8}],
     TYPE_THREE:[

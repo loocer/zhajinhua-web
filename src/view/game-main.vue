@@ -36,7 +36,7 @@
 
 <script>
 // import * as THREE from "three";
-import * as datas from '../assets/tools'
+import * as tools from '../assets/tools'
 import GameObject from '../assets/gameObject'
 import * as io from 'socket.io-client'
 // import * as TWEEN from "tween";
@@ -69,6 +69,7 @@ export default {
   },
   methods: {
     receiveSo (msg) {
+<<<<<<< HEAD
       let id = window.localStorage.userId
       let players = msg.roomPlayers.players
       let gameObjd = this.gameObject
@@ -79,6 +80,9 @@ export default {
         }
       }
 
+=======
+      let acType = tools.acType
+>>>>>>> 40e053640452698ba3cd270c2361e4946b1c7924
       if(msg.acType === acType.ON_READY){
         for(let p in rooms[i].players){
           rooms[i].players[p].isEnable = true
@@ -119,12 +123,16 @@ export default {
         rooms[i].onPass(msg)
         sendObj = {acType:acType.GAME_PASS,roomPlayers:rooms[i],backObj:frontRoomPlayers}
       }
+<<<<<<< HEAD
         console.log(msg)
+=======
+      console.log(msg)
+>>>>>>> 40e053640452698ba3cd270c2361e4946b1c7924
     },
     sendSo (msg) {
-        var temp = this
-        var roomInfo = this.roomBaseInfo
-        this.gsocket.emit(roomInfo.roomNo, msg);
+      var temp = this
+      var roomInfo = this.roomBaseInfo
+      this.gsocket.emit(roomInfo.roomNo, msg);
     },
     fapai () {
       this.gameObject.createPanel()
@@ -136,8 +144,8 @@ export default {
       var p = this.gameObject._allPosations[i]
       this.gameObject.resice({x:p.x,y:70,z:p.z})
     },
-    changeState(id){
-      this.gameObject.changeState(id)
+    changeState(obj){
+      this.gameObject.changeState(obj)
     },
     checkValue(){
       this.gameObject.checkValue()
