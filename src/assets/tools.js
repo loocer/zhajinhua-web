@@ -12,7 +12,7 @@ export const AllPosations = {
     ],
     TYPE_FUOR:[
         {class:"rr",x:0,y:0.1,z:80,rt:-0.8,state:stateColor.NORMAL},
-        {class:'gt',x:80,y:0.1,z:0,rt:-0.2,state:stateColor.OVER},
+        {class:'gt',x:80,y:0.1,z:0,rt:-0.2,state:stateColor.NORMAL},
         {class:'gjyu',x:0,y:0.1,z:-80,rt:-0.6,state:stateColor.NORMAL},
         {class:'uil',x:-50,y:0.1,z:0,rt:0.3,state:stateColor.ONGOING}
     ],

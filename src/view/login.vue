@@ -55,6 +55,7 @@ export default {
       axios.post('/api/login', user)
       .then(function (response) {
         console.log(response)
+        window.localStorage.userId = response.data.data.user.id
         temp.$router.push('home')
       })
       .catch(function (error) {
