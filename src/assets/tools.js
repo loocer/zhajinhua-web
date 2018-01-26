@@ -19,26 +19,26 @@ export const AllPosations = {
         {x:-50,y:0.1,z:0,rt:-0.6}
     ],
     TYPE_FUOR:[
-        {class:"rr",x:0,y:0.1,z:80,rt:-0.8,state:stateColor.NORMAL},
-        {class:'gt',x:80,y:0.1,z:0,rt:-0.2,state:stateColor.NORMAL},
-        {class:'gjyu',x:0,y:0.1,z:-80,rt:-0.6,state:stateColor.NORMAL},
-        {class:'uil',x:-50,y:0.1,z:0,rt:0.3,state:stateColor.ONGOING}
+        {class:'a4',x:-50,y:0.1,z:0,rt:0.3,state:stateColor.OVER},
+        {class:"a1",x:0,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},
+        {class:'a2',x:80,y:0.1,z:0,rt:-0.2,state:stateColor.OVER},
+        {class:'a3',x:0,y:0.1,z:-80,rt:-0.6,state:stateColor.OVER}
     ],
     TYPE_FIVE:[
-        {x:-30,y:0.1,z:80,rt:-0.8,state:stateColor.NORMAL},
-        {x:50,y:0.1,z:80,rt:-0.2,state:stateColor.NORMAL},
-        {x:80,y:0.1,z:0,rt:-0.6,state:stateColor.NORMAL},
-        {x:0,y:0.1,z:-80,rt:0.3,state:stateColor.NORMAL},
-        {x:-50,y:0.1,z:0,rt:0.3,state:stateColor.NORMAL}
+        {x:-30,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},
+        {x:50,y:0.1,z:80,rt:-0.2,state:stateColor.OVER},
+        {x:80,y:0.1,z:0,rt:-0.6,state:stateColor.OVER},
+        {x:0,y:0.1,z:-80,rt:0.3,state:stateColor.OVER},
+        {x:-50,y:0.1,z:0,rt:0.3,state:stateColor.OVER}
     ],
-    TYPE_SIX:[{x:0,y:0,z:0,state:stateColor.NORMAL},{x:0,y:0,z:0,state:stateColor.NORMAL}],
-    TYPE_SEVEN:[{x:0,y:0,z:0,state:stateColor.NORMAL},{x:0,y:0,z:0,state:stateColor.NORMAL}],
+    TYPE_SIX:[{x:0,y:0,z:0,state:stateColor.OVER},{x:0,y:0,z:0,state:stateColor.OVER}],
+    TYPE_SEVEN:[{x:0,y:0,z:0,state:stateColor.OVER},{x:0,y:0,z:0,state:stateColor.OVER}],
     TYPE_EIGHT:[
-        {x:-30,y:0.1,z:80,rt:-0.8,state:stateColor.NORMAL},
-        {x:0,y:0.1,z:80,rt:-0.2,state:stateColor.NORMAL},
-        {x:80,y:0.1,z:0,rt:-0.6,state:stateColor.NORMAL},
-        {x:0,y:0.1,z:-80,rt:0.3,state:stateColor.NORMAL},
-        {x:-50,y:0.1,z:0,rt:0.3,state:stateColor.NORMAL}
+        {x:-30,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},
+        {x:0,y:0.1,z:80,rt:-0.2,state:stateColor.OVER},
+        {x:80,y:0.1,z:0,rt:-0.6,state:stateColor.OVER},
+        {x:0,y:0.1,z:-80,rt:0.3,state:stateColor.OVER},
+        {x:-50,y:0.1,z:0,rt:0.3,state:stateColor.OVER}
     ],
 };
 

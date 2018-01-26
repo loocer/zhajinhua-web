@@ -320,7 +320,7 @@ export default class GameObject{
         let color = datas.getStateColor(obj.state)
         this.scene.traverse(function(e){
             if(e.class === obj.class + 'stateLight'){
-                e.material.color = color
+                e.material.color = new THREE.Color(color)
                 console.log(e)
             }
         })

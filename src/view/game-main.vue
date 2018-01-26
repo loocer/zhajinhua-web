@@ -11,7 +11,7 @@
         <span @click="showValue('gjyu')">任意查看</span>
         <span @click="hideValue('gjyu')">任意影藏</span>
         <span @click="checkValue()">查看</span>
-        <span @click="changeState({class:'gjyu',state:'ONGOING'})">改变状态</span>
+        <span @click="changeState({class:'a3',state:'ONGOING'})">改变状态</span>
         <span @click="compare('gjyu')">对比</span>
         <span @click="compare2('gjyu')">对比</span>
         <span @click="initPuker">初始化牌</span>
@@ -65,30 +65,39 @@ export default {
   computed: {
     roomBaseInfo() {
       return this.$store.state.roomBaseInfo
+    },
+    userId(){
+      return window.localStorage.userId
     }
   },
   methods: {
     receiveSo (msg) {
-<<<<<<< HEAD
       let id = window.localStorage.userId
       let players = msg.roomPlayers.players
       let gameObjd = this.gameObject
-      let data = []
-      for(let l in players){
-        if(players[l] = id){
-          players.slice(l,players.length).concat(players.slice(0,l-1))
+      let datas = []
+      if(players[players.length-1].id == id){
+        datas = players
+      }else{
+        for(let l in players){
+          if(players[l].id = id){
+            datas =players.slice(l+1,players.length).concat(players.slice(0,l))
+          }
         }
       }
-
-=======
+      let gameAllObj = this.gameObject._allPosations
+      
       let acType = tools.acType
->>>>>>> 40e053640452698ba3cd270c2361e4946b1c7924
+
       if(msg.acType === acType.ON_READY){
-        for(let p in rooms[i].players){
-          rooms[i].players[p].isEnable = true
+        for(let g in datas){
+            gameAllObj[g].id = datas[g].id
+            gameAllObj[g].state = tools.stateColor.NORMAL
+            this.gameObject.changeState({state:tools.stateColor.NORMAL,class:gameAllObj[g].class})
         }
-        sendObj = {acType:acType.ON_READY,roomPlayers:rooms[i]}
       }
+      console.log('----------------------')
+      console.log(gameAllObj)
       if(msg.acType === acType.ON_START){
         if(rooms[i].peopleNum===rooms[i].players.length){
           rooms[i].setPokersValue()
@@ -123,11 +132,6 @@ export default {
         rooms[i].onPass(msg)
         sendObj = {acType:acType.GAME_PASS,roomPlayers:rooms[i],backObj:frontRoomPlayers}
       }
-<<<<<<< HEAD
-        console.log(msg)
-=======
-      console.log(msg)
->>>>>>> 40e053640452698ba3cd270c2361e4946b1c7924
     },
     sendSo (msg) {
       var temp = this
@@ -186,7 +190,7 @@ export default {
     parameter.renderElement = document.getElementById("WebGL-output")
     temp.gameObject = new GameObject(parameter) 
     temp.gameObject.init()
-    let ff = {acType: 'ON_READY',roomId: roomInfo.roomNo}
+    let ff = {acType: 'ON_READY',roomId: roomInfo.roomNo,playerId:temp.userId}
     this.sendSo(ff)
     // function fuckWhy(){
     //   temp.gameObject.getMeshOnMourse(temp.gameObject)
