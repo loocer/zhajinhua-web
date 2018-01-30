@@ -75,9 +75,21 @@ export default {
       let id = window.localStorage.userId
       let players = msg.roomPlayers.players
       let gameObjd = this.gameObject
-      let datas = []
-      if(players[players.length-1].id == id){
-        datas = players
+      let datas = players
+      
+      console.log(0)
+      console.log('----------------------')
+      let gameAllObj = this.gameObject._allPosations
+      let dataArray = []
+      for(let g in gameAllObj){
+        dataArray.push(true)
+      }
+      for(let d in datas){
+        dataArray[d] = datas[d]
+      }
+
+      if(players[0].id == id){
+        datas = players 
       }else{
         for(let l in players){
           if(players[l].id = id){
@@ -85,8 +97,6 @@ export default {
           }
         }
       }
-      let gameAllObj = this.gameObject._allPosations
-      
       let acType = tools.acType
 
       if(msg.acType === acType.ON_READY){
