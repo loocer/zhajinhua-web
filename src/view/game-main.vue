@@ -82,18 +82,18 @@ export default {
       let gameAllObj = this.gameObject._allPosations
       let dataArray = []
       for(let g in gameAllObj){
-        dataArray.push(true)
+        dataArray.push(false)
       }
       for(let d in datas){
         dataArray[d] = datas[d]
       }
 
-      if(players[0].id == id){
-        datas = players 
+      if(dataArray[0].id == id){
+        datas = dataArray 
       }else{
-        for(let l in players){
-          if(players[l].id = id){
-            datas =players.slice(l+1,players.length).concat(players.slice(0,l))
+        for(let l in dataArray){
+          if(dataArray[l].id === id){
+            datas = dataArray.slice(l,dataArray.length).concat(dataArray.slice(0,l))
           }
         }
       }
@@ -101,9 +101,11 @@ export default {
 
       if(msg.acType === acType.ON_READY){
         for(let g in datas){
+          if(datas[g]){
             gameAllObj[g].id = datas[g].id
             gameAllObj[g].state = tools.stateColor.NORMAL
             this.gameObject.changeState({state:tools.stateColor.NORMAL,class:gameAllObj[g].class})
+          }  
         }
       }
       console.log('----------------------')
