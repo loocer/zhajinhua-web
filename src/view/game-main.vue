@@ -2,7 +2,7 @@
   <div class="game-main">
     <div id="Stats-output">
     </div>
-    <div class="buttons-1">
+    <!-- <div class="buttons-1">
         <span @click="fapai">翻牌</span>
         <span @click="resice(0)">1投注</span>
         <span @click="resice(1)">1投注</span>
@@ -16,9 +16,9 @@
         <span @click="compare2('gjyu')">对比</span>
         <span @click="initPuker">初始化牌</span>
         <span></span>
-    </div>
+    </div> -->
     <div class="buttons-2">
-        <span @click="showValue('gt')">任意查看</span>
+        <span @click="fapai('gt')">fapai</span>
         <span @click="hideValue('gt')">任意影藏</span>
         <span @click="checkValue()">查看</span>
         <span @click="changeState({class:'gjyu',state:'ONGOING'})">改变状态</span>
@@ -76,9 +76,6 @@ export default {
       let players = msg.roomPlayers.players
       let gameObjd = this.gameObject
       let datas = players
-      
-      console.log(0)
-      console.log('----------------------')
       let gameAllObj = this.gameObject._allPosations
       let dataArray = []
       for(let g in gameAllObj){
@@ -98,7 +95,6 @@ export default {
         }
       }
       let acType = tools.acType
-
       if(msg.acType === acType.ON_READY){
         for(let g in datas){
           if(datas[g]){
@@ -108,14 +104,17 @@ export default {
           }  
         }
       }
-      console.log('----------------------')
-      console.log(gameAllObj)
+
       if(msg.acType === acType.ON_START){
-        if(rooms[i].peopleNum===rooms[i].players.length){
-          rooms[i].setPokersValue()
-          sendObj = {acType:acType.ON_START,allow:true,roomPlayers:rooms[i]}
+        if(msg.allow){
+          this.gameObject.createPanel()
+          console.log(msg.roomPlayers)
+          // rooms[i].setPokersValue()
+          // sendObj = {acType:acType.ON_START,allow:true,roomPlayers:rooms[i]}
         }else{
-          sendObj = {acType:acType.ON_START,allow:false}
+          if(msg.backObj.playerId == id){
+             alert('人员还没到齐，不能发牌！')
+          }
         }
       }
       if(msg.acType === acType.SHOW_VALUE){
@@ -151,7 +150,11 @@ export default {
       this.gsocket.emit(roomInfo.roomNo, msg);
     },
     fapai () {
-      this.gameObject.createPanel()
+      var temp = this
+      var roomInfo = this.roomBaseInfo
+      let tt = {acType: 'ON_START',roomId: roomInfo.roomNo,playerId:temp.userId}
+      this.sendSo(tt)
+      // this.gameObject.createPanel()
     },
     initPuker(){
       this.gameObject.initPuker()

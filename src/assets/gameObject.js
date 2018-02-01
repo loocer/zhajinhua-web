@@ -346,7 +346,6 @@ export default class GameObject{
         
     }
 	setPukerPanel(object,time){
-
 		let cube = new THREE.BoxGeometry(20, 15, 0.1)
         var urlF = this.textures[0];
         var urlB = this.textures[1];
@@ -375,6 +374,7 @@ export default class GameObject{
             y:30,
             z:0
         }
+        console.log(object.y)
         var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, time).onUpdate(function(){
             mesh.position.x = this.x
             mesh.position.y = this.y
@@ -452,10 +452,12 @@ export default class GameObject{
 	createPanel(){
 		var temp;
 		var data = []
+        var size = this._allPosations.length
         for(let i = 0;i<3;i++){
             data = data.concat(this._allPosations)
         }
         for (let d in data){
+            data[d].y = d / size + 2 
             data[d].rt = Math.random()
             if(d==0){
                var tweenObject = this.setPukerPanel(data[d],500);
