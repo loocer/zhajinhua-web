@@ -107,6 +107,13 @@ export default {
 
       if(msg.acType === acType.ON_START){
         if(msg.allow){
+          axios.post('/api/get-value', user).then(function (response) {
+            console.log(response)
+            window.localStorage.userId = response.data.data.user.id
+            temp.$router.push('home')
+          }).catch(function (error) {
+            console.log(error)
+          })
           this.gameObject.createPanel()
           console.log(msg.roomPlayers)
           // rooms[i].setPokersValue()
