@@ -514,14 +514,14 @@ export default class GameObject{
 		this.scene = new Physijs.Scene
 		this.scene.setGravity(new THREE.Vector3(0, -80, 0))
 		let camera = this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
-        this.camera.position.x = -100
-        this.camera.position.y = 90
+        this.camera.position.x = 0
+        this.camera.position.y = 390
         this.camera.position.z = 0
         let renderer = this.renderer = new THREE.WebGLRenderer()
         this.renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0))
         this.renderer.setSize(window.innerWidth, window.innerHeight)
 
-        let planeGeometry = new THREE.PlaneGeometry(180, 180)
+        let planeGeometry = new THREE.PlaneGeometry(360, 180)
         let planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff})
         let plane = this.plane = new THREE.Mesh(planeGeometry, planeMaterial)
         // rotate and position the plane
@@ -548,7 +548,7 @@ export default class GameObject{
         let ground_material = Physijs.createMaterial(
                     new THREE.MeshPhongMaterial({map: THREE.ImageUtils.loadTexture('/static/assets/textures/general/wood-2.jpg')}),
                     .9, .3)
-        let ground = new Physijs.BoxMesh(new THREE.BoxGeometry(180,0.1, 180), ground_material, 0)
+        let ground = new Physijs.BoxMesh(new THREE.BoxGeometry(360,0.1, 180), ground_material, 0)
         this.scene.add(ground)
 
         this.setStateLight()

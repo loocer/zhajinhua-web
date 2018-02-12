@@ -19,10 +19,12 @@ export const AllPosations = {
         {x:-50,y:0.1,z:0,rt:-0.6}
     ],
     TYPE_FUOR:[
-        {class:'a4',x:-50,y:0.1,z:0,rt:0.3,state:stateColor.OVER},
-        {class:"a1",x:0,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},
-        {class:'a2',x:80,y:0.1,z:0,rt:-0.2,state:stateColor.OVER},
-        {class:'a3',x:0,y:0.1,z:-80,rt:-0.6,state:stateColor.OVER}
+        {class:'a1',x:100,y:0.1,z:0,rt:-0.2,state:stateColor.OVER},
+        {class:'a3',x:40,y:0.1,z:80,rt:-0.6,state:stateColor.OVER},
+        {class:"a5",x:-40,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},
+        {class:'a4',x:-100,y:0.1,z:0,rt:0.3,state:stateColor.OVER},
+        {class:'a2',x:40,y:0.1,z:-80,rt:-0.6,state:stateColor.OVER},
+        {class:'a6',x:-40,y:0.1,z:-80,rt:-0.6,state:stateColor.OVER}
     ],
     TYPE_FIVE:[
         {x:-30,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},
