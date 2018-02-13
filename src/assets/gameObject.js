@@ -365,34 +365,54 @@ export default class GameObject{
 
 
             var options = {
-                    size: 3,
-                    height: 0.1,
+                    size: 4,
+                    height: 0.01,
+                    // weight: "bold",
+                    font: "lisu",
+                    // bevelThickness: .1,
+                    // bevelSize: 0.05,
+                    // bevelSegments: 1,
+                    bevelEnabled: false,
+                    // curveSegments: 1,
+                    // steps: 1
+            };
+            var options2 = {
+                    size: 4,
+                    height: 0.01,
                     // weight: "bold",
                     font: "helvetiker",
-                    bevelThickness: 1,
-                    bevelSize: 0.1,
-                    bevelSegments: 1,
-                    bevelEnabled: true,
-                    curveSegments: 1,
-                    steps: 1
+                    // bevelThickness: .1,
+                    // bevelSize: 0.05,
+                    // bevelSegments: 1,
+                    bevelEnabled: false,
+                    // curveSegments: 1,
+                    // steps: 1
             };
             function createMesh(geom) {
                 var meshMaterial = new THREE.MeshPhongMaterial({
-                    // specular: 0xffffff,
-                    // color: 0xeeffff,
+                    specular: 0xFFFFFF,
+                    color:  0xFFFFFF,
                     shininess: 0.8,
-                    metal: true
+                    metal: false
                 });
                 var plane = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial]);
                 return plane
             }
-            let text = createMesh(new THREE.TextGeometry(data[s].nickName, options));
+            let text = createMesh(new THREE.TextGeometry(data[s].nickName.slice(0,5), options));
                 text.rotation.x = -0.5 * Math.PI
                 text.rotation.z = 0.5 * Math.PI
                 text.position.x = data[s].avatarPosition.x - 10;
                 text.position.y = 1;
                 text.position.z = data[s].avatarPosition.z + 10;
                 this.scene.add(text);
+
+            let text2 = createMesh(new THREE.TextGeometry(data[s].account, options2));
+                text2.rotation.x = -0.5 * Math.PI
+                text2.rotation.z = 0.5 * Math.PI
+                text2.position.x = data[s].avatarPosition.x + 12;
+                text2.position.y = 1;
+                text2.position.z = data[s].avatarPosition.z + 10;
+                this.scene.add(text2);    
         }
         
     }
@@ -586,7 +606,7 @@ export default class GameObject{
         let lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({color: '#fff700'}))
         this.scene.add(lookAtMesh)
 
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.7)
+        let directionalLight = new THREE.DirectionalLight(0xffffff,1)
         directionalLight.position.set(-20, 40, 60)
         this.scene.add(directionalLight)
 

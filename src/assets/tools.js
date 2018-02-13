@@ -28,7 +28,7 @@ export const AllPosations = {
     // ],
     TYPE_FUOR:[
         {
-          class:'a1',state:stateColor.OVER,nickName:'tom',
+          class:'a1',state:stateColor.OVER,nickName:'tom',account:-4,
           pointPosition:{x:100,y:0.1,z:0},
           pokerPosition:{x:100,y:0.1,z:-20,rt:-0.2},
           avatarPosition:{x:100,y:0.1,z:-20,rz:-0.5},
@@ -36,7 +36,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',
+          class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',account:23,
           pointPosition:{x:35,y:0.1,z:-85},
           pokerPosition:{x:40,y:0.1,z:-70,rt:-0.6},
           avatarPosition:{x:30,y:0.1,z:-60},
@@ -44,7 +44,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a3',state:stateColor.OVER,nickName:'王二个',
+          class:'a3',state:stateColor.OVER,nickName:'王二个',account:12,
           pointPosition:{x:-45,y:0.1,z:-85},
           pokerPosition:{x:-40,y:0.1,z:-80,rt:-0.6},
           avatarPosition:{x:-50,y:0.1,z:-70},
@@ -52,7 +52,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a4',state:stateColor.OVER,nickName:'王二个',
+          class:'a4',state:stateColor.OVER,nickName:'王二个',account:9,
           pointPosition:{x:-100,y:0.1,z:0},
           pokerPosition:{x:40,y:0.1,z:80,rt:-0.6},
           avatarPosition:{x:-100,y:0.1,z:-20,rz:-0.6},
@@ -60,7 +60,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a5',state:stateColor.OVER,nickName:'王二个',
+          class:'a5',state:stateColor.OVER,nickName:'王二个',account:-24,
           pointPosition:{x:-45,y:0.1,z:85},
           pokerPosition:{x:-100,y:0.1,z:0,rt:0.3},
           avatarPosition:{x:-50,y:0.1,z:70},
@@ -68,7 +68,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a6',state:stateColor.OVER,nickName:'王二个',
+          class:'a6',state:stateColor.OVER,nickName:'王二个',account:-52,
           pointPosition:{x:35,y:0.1,z:85},
           pokerPosition:{x:-40,y:0.1,z:80,rt:-0.8},
           avatarPosition:{x:30,y:0.1,z:70},
