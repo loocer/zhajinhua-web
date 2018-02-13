@@ -18,13 +18,64 @@ export const AllPosations = {
         {x:80,y:0.1,z:0,rt:-0.2},
         {x:-50,y:0.1,z:0,rt:-0.6}
     ],
+    // TYPE_FUOR:[
+    //     {class:'a1',x:100,y:0.1,z:0,rt:-0.2,state:stateColor.OVER},
+    //     {class:'a3',x:40,y:0.1,z:80,rt:-0.6,state:stateColor.OVER},
+    //     {class:"a5",x:-40,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},
+    //     {class:'a4',x:-100,y:0.1,z:0,rt:0.3,state:stateColor.OVER},
+    //     {class:'a2',x:40,y:0.1,z:-80,rt:-0.6,state:stateColor.OVER},
+    //     {class:'a6',x:-40,y:0.1,z:-80,rt:-0.6,state:stateColor.OVER}
+    // ],
     TYPE_FUOR:[
-        {class:'a1',x:100,y:0.1,z:0,rt:-0.2,state:stateColor.OVER},
-        {class:'a3',x:40,y:0.1,z:80,rt:-0.6,state:stateColor.OVER},
-        {class:"a5",x:-40,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},
-        {class:'a4',x:-100,y:0.1,z:0,rt:0.3,state:stateColor.OVER},
-        {class:'a2',x:40,y:0.1,z:-80,rt:-0.6,state:stateColor.OVER},
-        {class:'a6',x:-40,y:0.1,z:-80,rt:-0.6,state:stateColor.OVER}
+        {
+          class:'a1',state:stateColor.OVER,nickName:'tom',
+          pointPosition:{x:100,y:0.1,z:0},
+          pokerPosition:{x:100,y:0.1,z:-20,rt:-0.2},
+          avatarPosition:{x:100,y:0.1,z:-20,rz:-0.5},
+          namePosition:{x:100,y:0.1,z:0},
+          acconutPosition:{x:100,y:0.1,z:0}
+        },
+        {
+          class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',
+          pointPosition:{x:35,y:0.1,z:-85},
+          pokerPosition:{x:40,y:0.1,z:-70,rt:-0.6},
+          avatarPosition:{x:30,y:0.1,z:-60},
+          namePosition:{x:100,y:0.1,z:0},
+          acconutPosition:{x:100,y:0.1,z:0}
+        },
+        {
+          class:'a3',state:stateColor.OVER,nickName:'王二个',
+          pointPosition:{x:-45,y:0.1,z:-85},
+          pokerPosition:{x:-40,y:0.1,z:-80,rt:-0.6},
+          avatarPosition:{x:-50,y:0.1,z:-70},
+          namePosition:{x:100,y:0.1,z:0},
+          acconutPosition:{x:100,y:0.1,z:0}
+        },
+        {
+          class:'a4',state:stateColor.OVER,nickName:'王二个',
+          pointPosition:{x:-100,y:0.1,z:0},
+          pokerPosition:{x:40,y:0.1,z:80,rt:-0.6},
+          avatarPosition:{x:-100,y:0.1,z:-20,rz:-0.6},
+          namePosition:{x:100,y:0.1,z:0},
+          acconutPosition:{x:100,y:0.1,z:0}
+        },
+        {
+          class:'a5',state:stateColor.OVER,nickName:'王二个',
+          pointPosition:{x:-45,y:0.1,z:85},
+          pokerPosition:{x:-100,y:0.1,z:0,rt:0.3},
+          avatarPosition:{x:-50,y:0.1,z:70},
+          namePosition:{x:100,y:0.1,z:0},
+          acconutPosition:{x:100,y:0.1,z:0}
+        },
+        {
+          class:'a6',state:stateColor.OVER,nickName:'王二个',
+          pointPosition:{x:35,y:0.1,z:85},
+          pokerPosition:{x:-40,y:0.1,z:80,rt:-0.8},
+          avatarPosition:{x:30,y:0.1,z:70},
+          namePosition:{x:100,y:0.1,z:0},
+          acconutPosition:{x:100,y:0.1,z:0}
+        }
+        
     ],
     TYPE_FIVE:[
         {x:-30,y:0.1,z:80,rt:-0.8,state:stateColor.OVER},

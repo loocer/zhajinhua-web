@@ -21,7 +21,11 @@ export default class GameObject{
         }
         this.allsObject = []
         this.state = {checkState:false}
-        this.textures = [THREE.ImageUtils.loadTexture("/static/assets/6.jpg"),THREE.ImageUtils.loadTexture("/static/assets/6-1.jpg")]
+        this.textures = [
+                            THREE.ImageUtils.loadTexture("/static/assets/6.jpg"),
+                            THREE.ImageUtils.loadTexture("/static/assets/6-1.jpg"),
+                            THREE.ImageUtils.loadTexture("/static/Avatar.jpg")
+                        ]
 	}
 	setAllPosations(){
 		var temp = this
@@ -333,15 +337,62 @@ export default class GameObject{
             let sphereGeometry = new THREE.SphereGeometry(3, 10, 10);
             let sphereMaterial = new THREE.MeshLambertMaterial({color: color});
             let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-            sphere.class = data[s].class + 'stateLight'
-            // position the sphere
-            sphere.position.x = data[s].x;
-            sphere.position.y = 2;
-            sphere.position.z = data[s].z;
-            sphere.castShadow = true;
+                sphere.class = data[s].class + 'stateLight'
+                sphere.position.x = data[s].pointPosition.x;
+                sphere.position.y = 2;
+                sphere.position.z = data[s].pointPosition.z;
+                sphere.castShadow = true;
+                this.scene.add(sphere);
 
-            // add the sphere to the scene
-            this.scene.add(sphere);
+
+            let cube = new THREE.BoxGeometry(20, 15, 0.1)
+            var urlF = this.textures[0];
+            var urlB = this.textures[1];
+            var materialArr = []
+            for(let i = 0 ; i < 6; i++){
+                let texture = this.textures[2]
+                let m = i === 4 ? new THREE.MeshPhongMaterial({map:texture}):new THREE.MeshPhongMaterial({map:texture})
+                materialArr.push(m)
+            }
+            let facematerial=new THREE.MeshFaceMaterial(materialArr)
+            let mesh=new THREE.Mesh(cube,facematerial)
+                this.scene.add(mesh);
+                mesh.rotation.x = -0.5 * Math.PI
+                mesh.rotation.z = 0.5 * Math.PI
+                mesh.position.x = data[s].avatarPosition.x;
+                mesh.position.y = 2;
+                mesh.position.z = data[s].avatarPosition.z;
+
+
+            var options = {
+                    size: 3,
+                    height: 0.1,
+                    // weight: "bold",
+                    font: "helvetiker",
+                    bevelThickness: 1,
+                    bevelSize: 0.1,
+                    bevelSegments: 1,
+                    bevelEnabled: true,
+                    curveSegments: 1,
+                    steps: 1
+            };
+            function createMesh(geom) {
+                var meshMaterial = new THREE.MeshPhongMaterial({
+                    // specular: 0xffffff,
+                    // color: 0xeeffff,
+                    shininess: 0.8,
+                    metal: true
+                });
+                var plane = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial]);
+                return plane
+            }
+            let text = createMesh(new THREE.TextGeometry(data[s].nickName, options));
+                text.rotation.x = -0.5 * Math.PI
+                text.rotation.z = 0.5 * Math.PI
+                text.position.x = data[s].avatarPosition.x - 10;
+                text.position.y = 1;
+                text.position.z = data[s].avatarPosition.z + 10;
+                this.scene.add(text);
         }
         
     }
@@ -359,7 +410,7 @@ export default class GameObject{
         	materialArr.push(m)
         }
 
-  
+        
         let facematerial=new THREE.MeshFaceMaterial(materialArr)
         let mesh=new THREE.Mesh(cube,facematerial)
         mesh.class = object.class
@@ -405,11 +456,11 @@ export default class GameObject{
             let facematerial=new THREE.MeshFaceMaterial(materialArr)
             let cube = new THREE.BoxGeometry(20, 15, 0.1)
             let mesh=new THREE.Mesh(cube,facematerial)
-            mesh.rotation.z = data[d].rt
+            mesh.rotation.z = data[d].pokerPosition.rt
             mesh.rotation.x = -0.5 * Math.PI
-            mesh.position.x = data[d].x
+            mesh.position.x = data[d].pokerPosition.x
             mesh.position.y = -10
-            mesh.position.z = data[d].z
+            mesh.position.z = data[d].pokerPosition.z
             mesh.class = data[d].class
             this.allsObject.push(mesh)
             tempMesh.push(mesh)
@@ -457,8 +508,8 @@ export default class GameObject{
             data = data.concat(this._allPosations)
         }
         for (let d in data){
-            data[d].y = d / size + 2 
-            data[d].rt = Math.random()
+            data[d].pokerPosition.y = d / size + 2 
+            data[d].pokerPosition.rt = Math.random()
             if(d==0){
                var tweenObject = this.setPukerPanel(data[d],500);
                temp = tweenObject;
