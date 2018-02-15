@@ -4,13 +4,21 @@
     <!-- <p>{{ msg }}</p> -->
     <div class="container">
         <div class="row" >
-            <div class="col-sm-6 col-xs-6" >
+            <div class="col-sm-3 col-xs-3" >
+                
+                <button type="button" class="btn btn-default" @click="changeGamer(2)"><span>2人房</span></button>
+            </div>
+             <div class="col-sm-3 col-xs-3" >
+                
+                <button type="button" class="btn btn-default" @click="changeGamer(3)"><span>3人房</span></button>
+            </div>
+             <div class="col-sm-3 col-xs-3" >
                 
                 <button type="button" class="btn btn-default" @click="changeGamer(4)"><span>4人房</span></button>
             </div>
-            <div class="col-sm-6 col-xs-6" >
+            <div class="col-sm-3 col-xs-3" >
                 
-                <button type="button" class="btn btn-default" @click="changeGamer(8)"><span>8入房</span></button>
+                <button type="button" class="btn btn-default" @click="changeGamer(6)"><span>8入房</span></button>
             </div>
         </div>
         <div class="input-group input-group-lg">

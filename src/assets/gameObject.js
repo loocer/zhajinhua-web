@@ -21,12 +21,25 @@ export default class GameObject{
         }
         this.allsObject = []
         this.state = {checkState:false}
+        this.stateTextures = [
+            THREE.ImageUtils.loadTexture("/static/assets/textures/resice-1.png"),
+            THREE.ImageUtils.loadTexture("/static/assets/textures/resice-2.png"),
+            THREE.ImageUtils.loadTexture("/static/assets/textures/resice-3.png"),
+            THREE.ImageUtils.loadTexture("/static/assets/textures/resice-4.png"),
+            THREE.ImageUtils.loadTexture("/static/assets/textures/resice-5.png"),
+        ]
+        this.avatarTextures = []
         this.textures = [
-                            THREE.ImageUtils.loadTexture("/static/assets/6.jpg"),
-                            THREE.ImageUtils.loadTexture("/static/assets/6-1.jpg"),
-                            THREE.ImageUtils.loadTexture("/static/Avatar.jpg")
-                        ]
+            THREE.ImageUtils.loadTexture("/static/assets/6.jpg"),
+            THREE.ImageUtils.loadTexture("/static/assets/6-1.jpg"),
+            THREE.ImageUtils.loadTexture("/static/Avatar.jpg")
+        ]
 	}
+    setAvatarTextures(picUrls){
+        for(let p in picUrls){
+            this.avatarTextures.push(THREE.ImageUtils.loadTexture(picUrls[p]))
+        }
+    }
 	setAllPosations(){
 		var temp = this
 		this._allPosations = datas.AllPosations[temp._gameType]
@@ -329,6 +342,43 @@ export default class GameObject{
             }
         })
     }
+    changeStateText(obj){
+        var materialArr = []
+        for(let i = 0 ; i < 6; i++){
+            let texture = this.stateTextures[obj.state]
+            let m =  new THREE.MeshPhongMaterial({map:texture})
+            materialArr.push(m)
+        }
+        this.scene.traverse(function(e){
+            if(e.class === obj.class + 'stateText'){
+                e.material.map = materialArr
+                console.log(e)
+            }
+        })
+    }
+    //userId,state
+    setStateText(){
+        let data = this._allPosations
+        for(let s in data){
+            let cube = new THREE.BoxGeometry(15, 8, 0.1)
+            var materialArr = []
+            for(let i = 0 ; i < 6; i++){
+                let texture = this.stateTextures[0]
+                let m = new THREE.MeshPhongMaterial({map:texture})
+                materialArr.push(m)
+            }
+            let facematerial=new THREE.MeshFaceMaterial(materialArr)
+            let mesh=new THREE.Mesh(cube,facematerial)
+                this.scene.add(mesh);
+                mesh.class = data[s].class  + 'stateText'
+                mesh.rotation.x = -0.5 * Math.PI
+                mesh.rotation.z = 0.5 * Math.PI
+                mesh.position.x = data[s].avatarPosition.x - 20;
+                mesh.position.y = 2;
+                mesh.position.z = data[s].avatarPosition.z;
+        }
+        
+    }
     setStateLight(){
         let stateColor = datas.stateColor
         let data = this._allPosations
@@ -346,11 +396,10 @@ export default class GameObject{
 
 
             let cube = new THREE.BoxGeometry(20, 15, 0.1)
-            var urlF = this.textures[0];
-            var urlB = this.textures[1];
             var materialArr = []
+
             for(let i = 0 ; i < 6; i++){
-                let texture = this.textures[2]
+                let texture = this.avatarTextures[s]
                 let m = i === 4 ? new THREE.MeshPhongMaterial({map:texture}):new THREE.MeshPhongMaterial({map:texture})
                 materialArr.push(m)
             }
@@ -363,30 +412,17 @@ export default class GameObject{
                 mesh.position.y = 2;
                 mesh.position.z = data[s].avatarPosition.z;
 
-
             var options = {
                     size: 4,
                     height: 0.01,
-                    // weight: "bold",
                     font: "lisu",
-                    // bevelThickness: .1,
-                    // bevelSize: 0.05,
-                    // bevelSegments: 1,
-                    bevelEnabled: false,
-                    // curveSegments: 1,
-                    // steps: 1
+                    bevelEnabled: false
             };
             var options2 = {
                     size: 4,
                     height: 0.01,
-                    // weight: "bold",
                     font: "helvetiker",
-                    // bevelThickness: .1,
-                    // bevelSize: 0.05,
-                    // bevelSegments: 1,
-                    bevelEnabled: false,
-                    // curveSegments: 1,
-                    // steps: 1
+                    bevelEnabled: false
             };
             function createMesh(geom) {
                 var meshMaterial = new THREE.MeshPhongMaterial({
@@ -405,7 +441,6 @@ export default class GameObject{
                 text.position.y = 1;
                 text.position.z = data[s].avatarPosition.z + 10;
                 this.scene.add(text);
-
             let text2 = createMesh(new THREE.TextGeometry(data[s].account, options2));
                 text2.rotation.x = -0.5 * Math.PI
                 text2.rotation.z = 0.5 * Math.PI
@@ -417,7 +452,7 @@ export default class GameObject{
         
     }
 	setPukerPanel(object,time){
-		let cube = new THREE.BoxGeometry(20, 15, 0.1)
+		let cube = new THREE.BoxGeometry(25, 17, 0.1)
         var urlF = this.textures[0];
         var urlB = this.textures[1];
         // var urlF = object.urlFront
@@ -429,7 +464,6 @@ export default class GameObject{
             let m = new THREE.MeshPhongMaterial({map:texture})
         	materialArr.push(m)
         }
-
         
         let facematerial=new THREE.MeshFaceMaterial(materialArr)
         let mesh=new THREE.Mesh(cube,facematerial)
@@ -446,7 +480,7 @@ export default class GameObject{
             z:0
         }
         console.log(object.y)
-        var tween = new TWEEN.Tween(sp).to({x:object.x, y:object.y, z:object.z, rz:object.rt * Math.PI}, time).onUpdate(function(){
+        var tween = new TWEEN.Tween(sp).to({x:object.pokerPosition.x, y:object.pokerPosition.y, z:object.pokerPosition.z, rz:object.pokerPosition.rt * Math.PI}, time).onUpdate(function(){
             mesh.position.x = this.x
             mesh.position.y = this.y
             mesh.position.z = this.z
@@ -606,7 +640,7 @@ export default class GameObject{
         let lookAtMesh = new THREE.Mesh(lookAtGeom, new THREE.MeshLambertMaterial({color: '#fff700'}))
         this.scene.add(lookAtMesh)
 
-        let directionalLight = new THREE.DirectionalLight(0xffffff,1)
+        let directionalLight = new THREE.DirectionalLight(0xffffff,2)
         directionalLight.position.set(-20, 40, 60)
         this.scene.add(directionalLight)
 
@@ -617,13 +651,13 @@ export default class GameObject{
         this._renderElement.appendChild(renderer.domElement)
 
         let ground_material = Physijs.createMaterial(
-                    new THREE.MeshPhongMaterial({map: THREE.ImageUtils.loadTexture('/static/assets/textures/general/wood-2.jpg')}),
+                    new THREE.MeshPhongMaterial({map: THREE.ImageUtils.loadTexture('/static/assets/textures/ground.png')}),
                     .9, .3)
         let ground = new Physijs.BoxMesh(new THREE.BoxGeometry(360,0.1, 180), ground_material, 0)
         this.scene.add(ground)
 
         this.setStateLight()
-
+        this.setStateText()
         let self = this
         function knowWhat(){
            self.scene.traverse(function(e){

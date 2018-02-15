@@ -2,6 +2,9 @@
   <div class="game-main">
     <div id="Stats-output">
     </div>
+    <div class="main-panel">
+      
+    </div>
     <!-- <div class="buttons-1">
         <span @click="fapai">翻牌</span>
         <span @click="resice(0)">1投注</span>
@@ -39,6 +42,7 @@
 import * as tools from '../assets/tools'
 import GameObject from '../assets/gameObject'
 import * as io from 'socket.io-client'
+import axios from 'axios'
 // import * as TWEEN from "tween";
 export default {
   name: 'home',
@@ -49,6 +53,15 @@ export default {
       gamerNum: 4,
       showLooker:[],
       showMesh:[],
+      avadarUrl:[
+        '/static/1avatar.jpg',
+        '/static/2avatar.jpg',
+        '/static/3avatar.jpg',
+        '/static/4avatar.jpg',
+        '/static/5avatar.jpg',
+        '/static/6avatar.jpg',
+      ],
+      pokerValue:null,
       gsocket:null,
       gameObject: null,
       peopleNumType:[
@@ -107,10 +120,9 @@ export default {
 
       if(msg.acType === acType.ON_START){
         if(msg.allow){
-          axios.post('/api/get-value', user).then(function (response) {
+          axios.post('/api/get-value?roomNo=' + msg.roomPlayers.id).then(function (response) {
             console.log(response)
-            window.localStorage.userId = response.data.data.user.id
-            temp.$router.push('home')
+            this.pokerValue = response.data.data.value
           }).catch(function (error) {
             console.log(error)
           })
@@ -202,15 +214,15 @@ export default {
 
     var parameter = {}
     for(let i in this.peopleNumType){
-        if(i === roomInfo.peopleNum - 1){
-            parameter.type = this.peopleNumType[i]
+        if(i == roomInfo.peopleNum - 1){
+            parameter.type = this.peopleNumType[i - 1]
             break;
         }
     }
     parameter.roomNo = roomInfo.roomNo
-    parameter.type = 'TYPE_FUOR'
     parameter.renderElement = document.getElementById("WebGL-output")
     temp.gameObject = new GameObject(parameter) 
+    temp.gameObject.setAvatarTextures(temp.avadarUrl)
     temp.gameObject.init()
     let ff = {acType: 'ON_READY',roomId: roomInfo.roomNo,playerId:temp.userId}
     this.sendSo(ff)
@@ -226,6 +238,7 @@ export default {
 body {
   margin: 0;
   overflow: hidden;
+  height:100%;
 }
 .buttons-1{
   position: fixed;
@@ -239,5 +252,11 @@ body {
 .game-main{
     position: absolute;
     top:0;
+}
+.main-panel{
+  position: absolute;
+  width: 100%;
+  height:100%;
+  background: rgba(0, 0, 0, .5);
 }
 </style>
