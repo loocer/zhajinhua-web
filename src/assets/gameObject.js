@@ -1,4 +1,4 @@
-import * as datas from './tools'
+import * as tools from './tools'
 export default class GameObject{
 	constructor(obj){
 		this.id = Date.parse( new Date())
@@ -27,6 +27,7 @@ export default class GameObject{
             THREE.ImageUtils.loadTexture("/static/assets/textures/resice-3.png"),
             THREE.ImageUtils.loadTexture("/static/assets/textures/resice-4.png"),
             THREE.ImageUtils.loadTexture("/static/assets/textures/resice-5.png"),
+            THREE.ImageUtils.loadTexture("/static/assets/textures/resice-6.png")
         ]
         this.avatarTextures = []
         this.textures = [
@@ -36,13 +37,14 @@ export default class GameObject{
         ]
 	}
     setAvatarTextures(picUrls){
+        this.avatarTextures = []
         for(let p in picUrls){
             this.avatarTextures.push(THREE.ImageUtils.loadTexture(picUrls[p]))
         }
     }
 	setAllPosations(){
 		var temp = this
-		this._allPosations = datas.AllPosations[temp._gameType]
+		this._allPosations = tools.AllPosations[temp._gameType]
 	}
     getMeshOnMourse(self){
         let maths =[]
@@ -230,51 +232,50 @@ export default class GameObject{
             if(winClass === mathArray[mathArray.length-1].class){
                 this.checkValue()
                 var sps = {
-                        x:objs[i].position.x,
-                        y:objs[i].position.y,
-                        z:objs[i].position.z,
-                        rt:1,
-                        rz:0
-                    }
-                    var spe = {
-                        x:temp.compareTemp.compareP[i].x,
-                        y:temp.compareTemp.compareP[i].y,
-                        z:temp.compareTemp.compareP[i].z,
-                        rz:0.5 * Math.PI,
-                        rt:0
-                    }
-                    var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
-                        objs[i].position.x = this.x
-                        objs[i].position.y = this.y 
-                        objs[i].position.z = this.z 
-                        objs[i].rotation.z = this.rt
-                        objs[i].rotation.y = 0
-                        objs[i].rotation.x = this.rz
-                    }).start() 
+                    x:objs[i].position.x,
+                    y:objs[i].position.y,
+                    z:objs[i].position.z,
+                    rt:1,
+                    rz:0
+                }
+                var spe = {
+                    x:temp.compareTemp.compareP[i].x,
+                    y:temp.compareTemp.compareP[i].y,
+                    z:temp.compareTemp.compareP[i].z,
+                    rz:0.5 * Math.PI,
+                    rt:0
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    objs[i].position.x = this.x
+                    objs[i].position.y = this.y 
+                    objs[i].position.z = this.z 
+                    objs[i].rotation.z = this.rt
+                    objs[i].rotation.y = 0
+                    objs[i].rotation.x = this.rz
+                }).start() 
             }else{
                 var sps = {
-                        x:objs[i].position.x,
-                        y:objs[i].position.y,
-                        z:objs[i].position.z,
-                        rt:1,
-                        rz:0
-                    }
-                    var spe = {
-                        x:tempData.x,
-                        y:tempData.y,
-                        z:tempData.z,
-                        rz:-0.5 * Math.PI,
-                        rt:Math.random()
-                    }
-                    
-                    var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
-                        objs[i].position.x = this.x
-                        objs[i].position.y = this.y 
-                        objs[i].position.z = this.z 
-                        objs[i].rotation.x = this.rz
-                        objs[i].rotation.z = this.rt
-                        objs[i].rotation.y = 0
-                    }).start() 
+                    x:objs[i].position.x,
+                    y:objs[i].position.y,
+                    z:objs[i].position.z,
+                    rt:1,
+                    rz:0
+                }
+                var spe = {
+                    x:tempData.x,
+                    y:tempData.y,
+                    z:tempData.z,
+                    rz:-0.5 * Math.PI,
+                    rt:Math.random()
+                }
+                var tween = new TWEEN.Tween(sps).to(spe, 1000).onUpdate(function(){
+                    objs[i].position.x = this.x
+                    objs[i].position.y = this.y 
+                    objs[i].position.z = this.z 
+                    objs[i].rotation.x = this.rz
+                    objs[i].rotation.z = this.rt
+                    objs[i].rotation.y = 0
+                }).start() 
             }
         }
     }
@@ -334,7 +335,7 @@ export default class GameObject{
        }
     }
     changeState(obj){
-        let color = datas.getStateColor(obj.state)
+        let color = tools.getStateColor(obj.state)
         this.scene.traverse(function(e){
             if(e.class === obj.class + 'stateLight'){
                 e.material.color = new THREE.Color(color)
@@ -343,112 +344,119 @@ export default class GameObject{
         })
     }
     changeStateText(obj){
+        function changeTypeToCode(state){
+            if(state == tools.acType.ON_RAISE){
+                return 4
+            }
+            if(state == tools.acType.GAME_PASS){
+                return 1
+            }
+            if(state == tools.acType.ADD_RAISE){
+                return 2
+            }
+            if(state == tools.acType.SHOW_VALUE){
+                return 3
+            }
+            if(state == tools.acType.GAME_PK){
+                return 4
+            }else{
+                return 5
+            }
+        }
         var materialArr = []
         for(let i = 0 ; i < 6; i++){
-            let texture = this.stateTextures[obj.state]
+            let texture = this.stateTextures[changeTypeToCode(obj.state)]
             let m =  new THREE.MeshPhongMaterial({map:texture})
             materialArr.push(m)
         }
         this.scene.traverse(function(e){
             if(e.class === obj.class + 'stateText'){
-                e.material.map = materialArr
+                e.material.map = null
                 console.log(e)
             }
         })
     }
     //userId,state
-    setStateText(){
-        let data = this._allPosations
-        for(let s in data){
-            let cube = new THREE.BoxGeometry(15, 8, 0.1)
-            var materialArr = []
-            for(let i = 0 ; i < 6; i++){
-                let texture = this.stateTextures[0]
-                let m = new THREE.MeshPhongMaterial({map:texture})
-                materialArr.push(m)
-            }
-            let facematerial=new THREE.MeshFaceMaterial(materialArr)
-            let mesh=new THREE.Mesh(cube,facematerial)
-                this.scene.add(mesh);
-                mesh.class = data[s].class  + 'stateText'
-                mesh.rotation.x = -0.5 * Math.PI
-                mesh.rotation.z = 0.5 * Math.PI
-                mesh.position.x = data[s].avatarPosition.x - 20;
-                mesh.position.y = 2;
-                mesh.position.z = data[s].avatarPosition.z;
+    setStateText(dataObj){
+        let cube = new THREE.BoxGeometry(15, 8, 0.1)
+        var materialArr = []
+        for(let i = 0 ; i < 6; i++){
+            let texture = this.stateTextures[2]
+            let m = new THREE.MeshPhongMaterial({map:texture})
+            materialArr.push(m)
         }
-        
+        let facematerial=new THREE.MeshFaceMaterial(materialArr)
+        let mesh=new THREE.Mesh(cube,facematerial)
+            this.scene.add(mesh);
+            mesh.class = dataObj.class  + 'stateText'
+            mesh.rotation.x = -0.5 * Math.PI
+            mesh.rotation.z = 0.5 * Math.PI
+            mesh.position.x = dataObj.avatarPosition.x - 20;
+            mesh.position.y = 2;
+            mesh.position.z = dataObj.avatarPosition.z;
     }
-    setStateLight(){
-        let stateColor = datas.stateColor
-        let data = this._allPosations
-        for(let s in data){
-            let color = datas.getStateColor(data[s].state)
-            let sphereGeometry = new THREE.SphereGeometry(3, 10, 10);
-            let sphereMaterial = new THREE.MeshLambertMaterial({color: color});
-            let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-                sphere.class = data[s].class + 'stateLight'
-                sphere.position.x = data[s].pointPosition.x;
-                sphere.position.y = 2;
-                sphere.position.z = data[s].pointPosition.z;
-                sphere.castShadow = true;
-                this.scene.add(sphere);
-
-
-            let cube = new THREE.BoxGeometry(20, 15, 0.1)
-            var materialArr = []
-
-            for(let i = 0 ; i < 6; i++){
-                let texture = this.avatarTextures[s]
-                let m = i === 4 ? new THREE.MeshPhongMaterial({map:texture}):new THREE.MeshPhongMaterial({map:texture})
-                materialArr.push(m)
-            }
-            let facematerial=new THREE.MeshFaceMaterial(materialArr)
-            let mesh=new THREE.Mesh(cube,facematerial)
-                this.scene.add(mesh);
-                mesh.rotation.x = -0.5 * Math.PI
-                mesh.rotation.z = 0.5 * Math.PI
-                mesh.position.x = data[s].avatarPosition.x;
-                mesh.position.y = 2;
-                mesh.position.z = data[s].avatarPosition.z;
-
-            var options = {
-                    size: 4,
-                    height: 0.01,
-                    font: "lisu",
-                    bevelEnabled: false
-            };
-            var options2 = {
-                    size: 4,
-                    height: 0.01,
-                    font: "helvetiker",
-                    bevelEnabled: false
-            };
-            function createMesh(geom) {
-                var meshMaterial = new THREE.MeshPhongMaterial({
-                    specular: 0xFFFFFF,
-                    color:  0xFFFFFF,
-                    shininess: 0.8,
-                    metal: false
-                });
-                var plane = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial]);
-                return plane
-            }
-            let text = createMesh(new THREE.TextGeometry(data[s].nickName.slice(0,5), options));
-                text.rotation.x = -0.5 * Math.PI
-                text.rotation.z = 0.5 * Math.PI
-                text.position.x = data[s].avatarPosition.x - 10;
-                text.position.y = 1;
-                text.position.z = data[s].avatarPosition.z + 10;
-                this.scene.add(text);
-            let text2 = createMesh(new THREE.TextGeometry(data[s].account, options2));
-                text2.rotation.x = -0.5 * Math.PI
-                text2.rotation.z = 0.5 * Math.PI
-                text2.position.x = data[s].avatarPosition.x + 12;
-                text2.position.y = 1;
-                text2.position.z = data[s].avatarPosition.z + 10;
-                this.scene.add(text2);    
+    setStateLight(dataObj,a){
+        let color = tools.getStateColor(dataObj.state)
+        let sphereGeometry = new THREE.SphereGeometry(3, 10, 10);
+        let sphereMaterial = new THREE.MeshLambertMaterial({color: color});
+        let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            sphere.class = dataObj.class + 'stateLight'
+            sphere.position.x = dataObj.pointPosition.x;
+            sphere.position.y = 2;
+            sphere.position.z = dataObj.pointPosition.z;
+            sphere.castShadow = true;
+            this.scene.add(sphere);
+        let cube = new THREE.BoxGeometry(20, 15, 0.1)
+        var materialArr = []
+        for(let i = 0 ; i < 6; i++){
+            let texture = this.avatarTextures[a]
+            let m = i === 4 ? new THREE.MeshPhongMaterial({map:texture}):new THREE.MeshPhongMaterial({map:texture})
+            materialArr.push(m)
         }
+        let facematerial=new THREE.MeshFaceMaterial(materialArr)
+        let mesh=new THREE.Mesh(cube,facematerial)
+            this.scene.add(mesh);
+            mesh.rotation.x = -0.5 * Math.PI
+            mesh.rotation.z = 0.5 * Math.PI
+            mesh.position.x = dataObj.avatarPosition.x;
+            mesh.position.y = 2;
+            mesh.position.z = dataObj.avatarPosition.z;
+        var options = {
+                size: 4,
+                height: 0.01,
+                font: "lisu",
+                bevelEnabled: false
+        };
+        var options2 = {
+                size: 4,
+                height: 0.01,
+                font: "helvetiker",
+                bevelEnabled: false
+        };
+        function createMesh(geom) {
+            var meshMaterial = new THREE.MeshPhongMaterial({
+                specular: 0xFFFFFF,
+                color:  0xFFFFFF,
+                shininess: 0.8,
+                metal: false
+            });
+            var plane = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial]);
+            return plane
+        }
+        let text = createMesh(new THREE.TextGeometry(dataObj.nickName.slice(0,5), options));
+            text.rotation.x = -0.5 * Math.PI
+            text.rotation.z = 0.5 * Math.PI
+            text.position.x = dataObj.avatarPosition.x - 10;
+            text.position.y = 1;
+            text.position.z = dataObj.avatarPosition.z + 10;
+            this.scene.add(text);
+        let text2 = createMesh(new THREE.TextGeometry(dataObj.account, options2));
+            text2.rotation.x = -0.5 * Math.PI
+            text2.rotation.z = 0.5 * Math.PI
+            text2.position.x = dataObj.avatarPosition.x + 12;
+            text2.position.y = 1;
+            text2.position.z = dataObj.avatarPosition.z + 10;
+            this.scene.add(text2);    
         
     }
 	setPukerPanel(object,time){
@@ -488,6 +496,14 @@ export default class GameObject{
         })
         return tween
 	}
+    setBasePic(){
+        for(let a in this._allPosations){
+            if(this._allPosations[a].state != tools.stateColor.NONE){
+                this.setStateLight(this._allPosations[a], a)
+                this.setStateText(this._allPosations[a])
+            }
+        }
+    }
     initPuker(){
         var temp;
         var data = [],tempMesh = []
@@ -655,10 +671,8 @@ export default class GameObject{
                     .9, .3)
         let ground = new Physijs.BoxMesh(new THREE.BoxGeometry(360,0.1, 180), ground_material, 0)
         this.scene.add(ground)
-
-        this.setStateLight()
-        this.setStateText()
         let self = this
+        this.setBasePic()
         function knowWhat(){
            self.scene.traverse(function(e){
                 console.log(e)
@@ -671,7 +685,6 @@ export default class GameObject{
                 
             }) 
         }
-
         var s = this.scene
         var c = this.camera
         var r = this.renderer

@@ -1,7 +1,8 @@
 export const stateColor={
     OVER : 'OVER',
     ONGOING : "ONGOING",
-    NORMAL : "NORMAL"
+    NORMAL : "NORMAL",
+    NONE: 'NONE'
 };
 export const acType = {
   ON_READY : 'ON_READY',
@@ -9,12 +10,13 @@ export const acType = {
   SHOW_VALUE : 'SHOW_VALUE',
   GAME_PASS : 'GAME_PASS',
   GAME_PK : 'GAME_PK',
-  RAISE: 'RAISE'
-}
+  ON_RAISE: 'ON_RAISE',
+  ADD_RAISE: 'ADD_RAISE'
+};
 export const AllPosations = {
     TYPE_TWO:[
       {
-        class:'a1',state:stateColor.OVER,nickName:'tom',account:-4,
+        class:'a1',state:stateColor.NONE,nickName:'tom',account:-4,
         pointPosition:{x:110,y:0.1,z:0},
         pokerPosition:{x:70,y:0.1,z:0,rt:-0.2},
         avatarPosition:{x:100,y:0.1,z:-20,rz:-0.5},
@@ -22,7 +24,7 @@ export const AllPosations = {
         acconutPosition:{x:100,y:0.1,z:0}
       },
       {
-        class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',account:23,
+        class:'a2',state:stateColor.NONE,nickName:'HTYHEYTH',account:23,
         pointPosition:{x:35,y:0.1,z:-85},
         pokerPosition:{x:30,y:0.1,z:-30,rt:-0.6},
         avatarPosition:{x:30,y:0.1,z:-70},
@@ -32,7 +34,7 @@ export const AllPosations = {
     ],
     TYPE_THREE:[
         {
-          class:'a1',state:stateColor.OVER,nickName:'tom',account:-4,
+          class:'a1',state:stateColor.NONE,nickName:'tom',account:-4,
           pointPosition:{x:100,y:0.1,z:0},
           pokerPosition:{x:70,y:0.1,z:0,rt:-0.2},
           avatarPosition:{x:100,y:0.1,z:-20,rz:-0.5},
@@ -40,7 +42,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',account:23,
+          class:'a2',state:stateColor.NONE,nickName:'HTYHEYTH',account:23,
           pointPosition:{x:35,y:0.1,z:-85},
           pokerPosition:{x:30,y:0.1,z:-30,rt:-0.6},
           avatarPosition:{x:30,y:0.1,z:-70},
@@ -48,7 +50,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },  
         {
-          class:'a3',state:stateColor.OVER,nickName:'王二个',account:12,
+          class:'a3',state:stateColor.NONE,nickName:'王二个',account:12,
           pointPosition:{x:-45,y:0.1,z:-85},
           pokerPosition:{x:-40,y:0.1,z:-30,rt:-0.6},
           avatarPosition:{x:-50,y:0.1,z:-70},
@@ -58,7 +60,7 @@ export const AllPosations = {
     ],
     TYPE_FUOR:[
         {
-          class:'a1',state:stateColor.OVER,nickName:'tom',account:-4,
+          class:'a1',state:stateColor.NONE,nickName:'tom',account:-4,
           pointPosition:{x:100,y:0.1,z:0},
           pokerPosition:{x:70,y:0.1,z:0,rt:-0.2},
           avatarPosition:{x:100,y:0.1,z:-20,rz:-0.5},
@@ -66,7 +68,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',account:23,
+          class:'a2',state:stateColor.NONE,nickName:'HTYHEYTH',account:23,
           pointPosition:{x:35,y:0.1,z:-85},
           pokerPosition:{x:30,y:0.1,z:-30,rt:-0.6},
           avatarPosition:{x:30,y:0.1,z:-70},
@@ -74,7 +76,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },  
         {
-          class:'a3',state:stateColor.OVER,nickName:'王二个',account:12,
+          class:'a3',state:stateColor.NONE,nickName:'王二个',account:12,
           pointPosition:{x:-45,y:0.1,z:-85},
           pokerPosition:{x:-40,y:0.1,z:-30,rt:-0.6},
           avatarPosition:{x:-50,y:0.1,z:-70},
@@ -82,7 +84,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a4',state:stateColor.OVER,nickName:'王二个',account:9,
+          class:'a4',state:stateColor.NONE,nickName:'王二个',account:9,
           pointPosition:{x:-100,y:0.1,z:0},
           pokerPosition:{x:-70,y:0.1,z:0,rt:-0.6},
           avatarPosition:{x:-100,y:0.1,z:-20,rz:-0.6},
@@ -92,7 +94,7 @@ export const AllPosations = {
     ],
     // TYPE_FUOR:[
     //     {
-    //       class:'a1',state:stateColor.OVER,nickName:'tom',account:-4,
+    //       class:'a1',state:stateColor.NONE,nickName:'tom',account:-4,
     //       pointPosition:{x:100,y:0.1,z:0},
     //       pokerPosition:{x:100,y:0.1,z:-20,rt:-0.2},
     //       avatarPosition:{x:100,y:0.1,z:-20,rz:-0.5},
@@ -100,7 +102,7 @@ export const AllPosations = {
     //       acconutPosition:{x:100,y:0.1,z:0}
     //     },
     //     {
-    //       class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',account:23,
+    //       class:'a2',state:stateColor.NONE,nickName:'HTYHEYTH',account:23,
     //       pointPosition:{x:35,y:0.1,z:-85},
     //       pokerPosition:{x:40,y:0.1,z:-70,rt:-0.6},
     //       avatarPosition:{x:30,y:0.1,z:-70},
@@ -108,7 +110,7 @@ export const AllPosations = {
     //       acconutPosition:{x:100,y:0.1,z:0}
     //     },
     //     {
-    //       class:'a3',state:stateColor.OVER,nickName:'王二个',account:12,
+    //       class:'a3',state:stateColor.NONE,nickName:'王二个',account:12,
     //       pointPosition:{x:-45,y:0.1,z:-85},
     //       pokerPosition:{x:-40,y:0.1,z:-80,rt:-0.6},
     //       avatarPosition:{x:-50,y:0.1,z:-70},
@@ -116,7 +118,7 @@ export const AllPosations = {
     //       acconutPosition:{x:100,y:0.1,z:0}
     //     },
     //     {
-    //       class:'a4',state:stateColor.OVER,nickName:'王二个',account:9,
+    //       class:'a4',state:stateColor.NONE,nickName:'王二个',account:9,
     //       pointPosition:{x:-100,y:0.1,z:0},
     //       pokerPosition:{x:40,y:0.1,z:80,rt:-0.6},
     //       avatarPosition:{x:-100,y:0.1,z:-20,rz:-0.6},
@@ -124,7 +126,7 @@ export const AllPosations = {
     //       acconutPosition:{x:100,y:0.1,z:0}
     //     },
     //     {
-    //       class:'a5',state:stateColor.OVER,nickName:'王二个',account:-24,
+    //       class:'a5',state:stateColor.NONE,nickName:'王二个',account:-24,
     //       pointPosition:{x:-45,y:0.1,z:85},
     //       pokerPosition:{x:-100,y:0.1,z:0,rt:0.3},
     //       avatarPosition:{x:-50,y:0.1,z:70},
@@ -132,7 +134,7 @@ export const AllPosations = {
     //       acconutPosition:{x:100,y:0.1,z:0}
     //     },
     //     {
-    //       class:'a6',state:stateColor.OVER,nickName:'王二个',account:-52,
+    //       class:'a6',state:stateColor.NONE,nickName:'王二个',account:-52,
     //       pointPosition:{x:35,y:0.1,z:85},
     //       pokerPosition:{x:-40,y:0.1,z:80,rt:-0.8},
     //       avatarPosition:{x:30,y:0.1,z:70},
@@ -142,7 +144,7 @@ export const AllPosations = {
     // ],
     TYPE_FIVE:[
         {
-          class:'a1',state:stateColor.OVER,nickName:'tom',account:-4,
+          class:'a1',state:stateColor.NONE,nickName:'tom',account:-4,
           pointPosition:{x:100,y:0.1,z:0},
           pokerPosition:{x:70,y:0.1,z:0,rt:-0.2},
           avatarPosition:{x:100,y:0.1,z:-20,rz:-0.5},
@@ -150,7 +152,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',account:23,
+          class:'a2',state:stateColor.NONE,nickName:'HTYHEYTH',account:23,
           pointPosition:{x:35,y:0.1,z:-85},
           pokerPosition:{x:30,y:0.1,z:-30,rt:-0.6},
           avatarPosition:{x:30,y:0.1,z:-70},
@@ -158,7 +160,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },  
         {
-          class:'a3',state:stateColor.OVER,nickName:'王二个',account:12,
+          class:'a3',state:stateColor.NONE,nickName:'王二个',account:12,
           pointPosition:{x:-45,y:0.1,z:-85},
           pokerPosition:{x:-40,y:0.1,z:-30,rt:-0.6},
           avatarPosition:{x:-50,y:0.1,z:-70},
@@ -166,7 +168,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a4',state:stateColor.OVER,nickName:'王二个',account:9,
+          class:'a4',state:stateColor.NONE,nickName:'王二个',account:9,
           pointPosition:{x:-100,y:0.1,z:0},
           pokerPosition:{x:-70,y:0.1,z:0,rt:-0.6},
           avatarPosition:{x:-100,y:0.1,z:-20,rz:-0.6},
@@ -174,7 +176,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a5',state:stateColor.OVER,nickName:'王二个',account:-24,
+          class:'a5',state:stateColor.NONE,nickName:'王二个',account:-24,
           pointPosition:{x:-45,y:0.1,z:85},
           pokerPosition:{x:-40,y:0.1,z:30,rt:0.3},
           avatarPosition:{x:-50,y:0.1,z:70},
@@ -184,7 +186,7 @@ export const AllPosations = {
     ],
     TYPE_SIX:[
         {
-          class:'a1',state:stateColor.OVER,nickName:'tom',account:-4,
+          class:'a1',state:stateColor.NONE,nickName:'tom',account:-4,
           statePosition:{x:100,y:0.1,z:10},
           pointPosition:{x:100,y:0.1,z:0},
           pokerPosition:{x:70,y:0.1,z:0,rt:-0.2},
@@ -193,7 +195,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a2',state:stateColor.OVER,nickName:'HTYHEYTH',account:23,
+          class:'a2',state:stateColor.NONE,nickName:'HTYHEYTH',account:23,
           statePosition:{x:10,y:0.1,z:-40},
           pointPosition:{x:35,y:0.1,z:-85},
           pokerPosition:{x:30,y:0.1,z:-40,rt:-0.6},
@@ -202,7 +204,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },  
         {
-          class:'a3',state:stateColor.OVER,nickName:'王二个',account:12,
+          class:'a3',state:stateColor.NONE,nickName:'王二个',account:12,
           statePosition:{x:-20,y:0.1,z:-40,},
           pointPosition:{x:-45,y:0.1,z:-85},
           pokerPosition:{x:-40,y:0.1,z:-40,rt:-0.6},
@@ -211,7 +213,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a4',state:stateColor.OVER,nickName:'王二个',account:9,
+          class:'a4',state:stateColor.NONE,nickName:'王二个',account:9,
           statePosition:{x:-100,y:0.1,z:10},
           pointPosition:{x:-100,y:0.1,z:0},
           pokerPosition:{x:-70,y:0.1,z:0,rt:-0.6},
@@ -220,7 +222,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a5',state:stateColor.OVER,nickName:'王二个',account:-24,
+          class:'a5',state:stateColor.NONE,nickName:'王二个',account:-24,
           statePosition:{x:-20,y:0.1,z:40},
           pointPosition:{x:-45,y:0.1,z:85},
           pokerPosition:{x:-40,y:0.1,z:40,rt:0.3},
@@ -229,7 +231,7 @@ export const AllPosations = {
           acconutPosition:{x:100,y:0.1,z:0}
         },
         {
-          class:'a6',state:stateColor.OVER,nickName:'王二个',account:-52,
+          class:'a6',state:stateColor.NONE,nickName:'王二个',account:-52,
           statePosition:{x:10,y:0.1,z:40},
           pointPosition:{x:35,y:0.1,z:85},
           pokerPosition:{x:30,y:0.1,z:40,rt:-0.8},

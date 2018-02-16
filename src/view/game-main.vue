@@ -31,6 +31,9 @@
         <span @click="sendSo('地球人你好，我是太阳之子，我叫tom！')">发送一个消息</span>
         <span></span>
     </div>
+     <div class="buttons-3">
+        <span @click="rtfhgt()">既然已经无缘入围奖</span>
+    </div>
     <!-- Div which will hold the Output -->
     <div id="WebGL-output">
     </div>
@@ -85,10 +88,9 @@ export default {
   },
   methods: {
     receiveSo (msg) {
-      let id = window.localStorage.userId
-      let players = msg.roomPlayers.players
+      let id = this.userId
+      let datas = msg.roomPlayers.players
       let gameObjd = this.gameObject
-      let datas = players
       let gameAllObj = this.gameObject._allPosations
       let dataArray = []
       for(let g in gameAllObj){
@@ -109,13 +111,19 @@ export default {
       }
       let acType = tools.acType
       if(msg.acType === acType.ON_READY){
-        for(let g in datas){
-          if(datas[g]){
-            gameAllObj[g].id = datas[g].id
+        let picArray = []
+        for(let g in dataArray){
+          if(dataArray[g]){
+            picArray.push(dataArray[g].user.avatarUrl)
+            gameAllObj[g].id = dataArray[g].id
             gameAllObj[g].state = tools.stateColor.NORMAL
+            this.gameObject.setAvatarTextures(picArray)
             this.gameObject.changeState({state:tools.stateColor.NORMAL,class:gameAllObj[g].class})
           }  
         }
+        this.gameObject.setBasePic()
+        console.log(4444999999999999999999999999444)
+        console.log(this.gameObject.avatarTextures)
       }
 
       if(msg.acType === acType.ON_START){
@@ -149,12 +157,14 @@ export default {
         rooms[i].onRaise(msg)
         sendObj = {acType:acType.RAISE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
       }
-      if(msg.acType === acType.RAISE){
-        frontRoomPlayers.acType = acType.RAISE
-        frontRoomPlayers.playerId = msg.playerId
-        frontRoomPlayers.raiseMoney = msg.raiseMoney
-        rooms[i].onRaise(msg)
-        sendObj = {acType:acType.RAISE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
+      if(msg.acType === acType.ON_RAISE){
+        for(let g in gameAllObj){
+          for(let i in datas){
+            if(gameAllObj[g].id == datas[i].id){
+              this.gameObject.changeStateText({state:datas[i].state,class:gameAllObj[g].class})
+            }
+          }
+        }
       }
       if(msg.acType === acType.GAME_PASS){
         frontRoomPlayers.acType = acType.GAME_PASS
@@ -184,6 +194,12 @@ export default {
     },
     changeState(obj){
       this.gameObject.changeState(obj)
+    },
+    rtfhgt(){
+      var temp = this
+      var roomInfo = this.roomBaseInfo
+      let tt = {acType: 'ON_RAISE',roomId: roomInfo.roomNo,playerId:temp.userId}
+      this.sendSo(tt)
     },
     checkValue(){
       this.gameObject.checkValue()
@@ -222,7 +238,6 @@ export default {
     parameter.roomNo = roomInfo.roomNo
     parameter.renderElement = document.getElementById("WebGL-output")
     temp.gameObject = new GameObject(parameter) 
-    temp.gameObject.setAvatarTextures(temp.avadarUrl)
     temp.gameObject.init()
     let ff = {acType: 'ON_READY',roomId: roomInfo.roomNo,playerId:temp.userId}
     this.sendSo(ff)
@@ -248,6 +263,13 @@ body {
   position: fixed;
   top:30px;
   left: 200px;
+}
+.buttons-3{
+  position: fixed;
+  top:50px;
+  left: 200px;
+  color:red;
+  font-size: 30px;
 }
 .game-main{
     position: absolute;
